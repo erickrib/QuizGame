@@ -1,6 +1,12 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "experimentalDecorators": true
+  },
+  "extends": "expo/tsconfig.base",
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist",
+    "**/*spec.ts"
+  ]
 }
