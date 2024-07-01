@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Relation } from "typeorm";
 import { Question } from "./Question";
 
 @Entity("questions_group")
@@ -10,5 +10,5 @@ export class QuestionsGroup {
   nome: string;
 
   @OneToMany(() => Question, question => question.grupo, { cascade: true })
-  questions!: Question[];
+  questions!: Relation<Question[]>;
 }

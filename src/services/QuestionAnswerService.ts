@@ -8,7 +8,6 @@ export interface CreateAnswerParams {
   resposta_4?: string;
   resposta_correta?: string;
   active: boolean;
-  question_id: number;
 }
 
 export class QuestionAnswerService {
@@ -17,10 +16,6 @@ export class QuestionAnswerService {
   constructor(repository: IQuestionAnswerRepository) {
     this.repository = repository;
   }
-
-  // async create(params: CreateAnswerParams): Promise<QuestionAnswer> {
-  //   return await this.repository.createAnswer(params);
-  // }
 
   async findAnswersByQuestion(questionId: number): Promise<QuestionAnswer[]> {
     return await this.repository.findByQuestionId(questionId);

@@ -10,8 +10,8 @@ const ChoseGroupQuestions: React.FC = () => {
     const [groups, setGroups] = useState<QuestionsGroup[]>([]);
     const navigation = useNavigation<any>();
 
-    const handlePress = () => {
-        navigation.navigate('GameView');
+    const handleNavigate = (group: QuestionsGroup) => {
+        navigation.navigate('GameView', { group });
     }
 
     useEffect(() => {
@@ -31,9 +31,9 @@ const ChoseGroupQuestions: React.FC = () => {
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Escolha o grupo de perguntas</Text>
             <View style={styles.cardContainer}>
-                {groups.map((group, index) => (
+                {groups.map((group) => (
                     <View style={styles.cardRow}>
-                        <CardGroupQuestions key={index} onPress={handlePress} text={group.nome} />
+                        <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
                     </View>
                 ))}
             </View>

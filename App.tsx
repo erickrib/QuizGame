@@ -10,6 +10,7 @@ import { useDatabaseInitialize } from './src/hooks/use-database-initialize';
 import DATA from './src/database/questions.json';
 import { questionsGroupService } from './src/services';
 import { useEffect } from 'react';
+import { CreateQuestionsGroupParams } from './src/services/QuestionsGroupService';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,9 +21,28 @@ export default function App() {
   const handlePopulateDB = async () => {
 
     try {
-      for (const groupParams of DATA) {
-        await questionsGroupService.create(groupParams);
-      }
+        for (const groupParams of DATA) {
+          const formattedQuestions = groupParams.questions.map(question => ({
+            nome: question.nome,
+            descricao: question.descricao,
+            resposta: question.resposta ? {
+              resposta_1: question.resposta.resposta_1,
+              resposta_2: question.resposta.resposta_2,
+              resposta_3: question.resposta.resposta_3,
+              resposta_4: question.resposta.resposta_4,
+              resposta_correta: question.resposta.resposta_correta,
+              active: true, 
+            } : undefined,
+          }));
+          
+          const group: CreateQuestionsGroupParams = {
+            nome: groupParams.nome,
+            questions: formattedQuestions,
+          };
+          
+          await questionsGroupService.create(group);
+
+        }
 
     } catch (error) {
       console.error('Falha ao popular BD:', error);
@@ -42,10 +62,12 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const isFilled = await checkDatabaseFilled();
+      if (ready) {
+        const isFilled = await checkDatabaseFilled();        
 
-      if (ready && !isFilled) {
-        await handlePopulateDB();
+        if (!isFilled) {
+          await handlePopulateDB();
+        }
       } else {
         console.info('Banco de dados já preenchido');
       }

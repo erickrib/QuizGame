@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, DimensionValue } from 'react-native';
 import styles from './styles';
 
-export default CustomProgressBar = ({ progress, close }) => {
+interface CustomProgressBarProps {
+  progress: number;
+  close: () => void;
+}
+
+const CustomProgressBar: React.FC<CustomProgressBarProps> = ({ progress, close }) => {
   const handleCancel = () => {
     close();
   };
 
-  const progressWidth = `${(progress / 10) * 100}%`;
+  const progressWidth: DimensionValue = `${(progress / 10) * 100}%`;
 
   return (
     <View style={styles.container}>
@@ -20,4 +25,7 @@ export default CustomProgressBar = ({ progress, close }) => {
     </View>
   );
 };
+
+export default CustomProgressBar;
+
 

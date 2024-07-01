@@ -5,7 +5,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 import QuizButton from '../QuizButton/QuizButton';
 
-const AlertFeedback = ({ type, onClose }) => {
+interface AlertFeedbackProps {
+  type: 'success' | 'error';
+  onClose: () => void;
+}
+
+const AlertFeedback: React.FC<AlertFeedbackProps> = ({ type, onClose }) => {
   const isSuccess = type === 'success';
 
   const handleContinue = () => {

@@ -6,7 +6,7 @@ export interface CreateQuestionsGroupParams extends Pick<QuestionsGroup, "nome">
   questions?: {
     nome: string;
     descricao: string;
-    respostas?: CreateAnswerParams;
+    resposta?: CreateAnswerParams;
   }[];
 }
 
@@ -24,5 +24,6 @@ export class QuestionsGroupService {
   async fetchAll(): Promise<QuestionsGroup[]> {
     return await this.repository.fetchAllQuestionsGroups();
   }
+
 }
 

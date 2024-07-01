@@ -14,7 +14,8 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   private conn: DataSource;
 
   constructor() {
-    this.conn = conn;
+     this.conn = conn;
+   //  this.clearDatabase();
   }
 
   public static getInstance(): SQLiteDatabase {
@@ -30,13 +31,13 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     }
   }
 
-  // Funções de Criação de Grupo de Questões
+  // Funções de Criação Questões
   async createQuestionsGroup(param: CreateQuestionsGroupParams): Promise<QuestionsGroup> {
     return await this.conn.transaction(async (trans) => {
-      // 1. Criar o grupo de questões
+      // Criar o grupo de questões
       const groupDB = await this.createGroup(trans, param);
   
-      // 2. Criar as questões associadas, se houver
+      // Criar as questões associadas, se houver
       if (param.questions) {
         const questionsDB = await this.createQuestions(trans, param.questions, groupDB);
         groupDB.questions = questionsDB;
@@ -46,6 +47,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     });
   }
   
+  // Funções de Criação de Grupo de Questões
   private async createGroup(trans: EntityManager, param: CreateQuestionsGroupParams): Promise<QuestionsGroup> {
     const group = new QuestionsGroup();
     group.nome = param.nome;
@@ -53,8 +55,9 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     return await trans.save(group);
   }
   
+  // Funções de Criação de Perguntas
   private async createQuestions(trans: EntityManager, questions: CreateQuestionsGroupParams['questions'], groupDB: QuestionsGroup): Promise<Question[]> {
-    const questionsPromises = questions.map(async ({ nome, descricao, respostas }) => {
+    const questionsPromises = questions.map(async ({ nome, descricao, resposta }) => {
       const question = new Question();
       question.nome = nome;
       question.descricao = descricao;
@@ -62,8 +65,8 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   
       const questionDB = await trans.save(question);
   
-      if (respostas) {
-        await this.createAnswers(trans, respostas, questionDB);
+      if (resposta) {
+        await this.createAnswers(trans, resposta, questionDB);
       }
   
       return questionDB;
@@ -72,6 +75,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     return await Promise.all(questionsPromises);
   }
   
+  // Funções de Criação de Respostas
   private async createAnswers(trans: EntityManager, respostas: CreateAnswerParams, questionDB: Question): Promise<void> {
     const answer = new QuestionAnswer();
     answer.resposta_1 = respostas.resposta_1;

@@ -1,15 +1,13 @@
 import {
     Column,
     Entity,
-    JoinColumn,
     ManyToOne,
-    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
+    Relation,
   } from "typeorm";
   import { QuestionsGroup } from "./QuestionsGroup";
   import { QuestionAnswer } from "./QuestionAnswer";
-// import { QuestionStudent } from "./QuestionStudent";
   
   @Entity("question")
   export class Question {
@@ -26,9 +24,6 @@ import {
     grupo!: QuestionsGroup;
 
     @OneToOne(() => QuestionAnswer, answer => answer.questao, { cascade: true })
-    resposta!: QuestionAnswer;
-
-  //   @OneToOne(() => QuestionStudent, questionStudent => questionStudent.question)
-  // questioStudent!: QuestionStudent;
+    resposta!: Relation<QuestionAnswer>;
 
   }

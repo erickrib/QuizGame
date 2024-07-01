@@ -16,9 +16,9 @@ export class QuestionsService {
     this.repository = repository;
   }
 
-  // async create(params: CreateQuestionParams): Promise<Question> {
-  //   return await this.repository.createQuestion(params);
-  // }
+  async clearDatabase(): Promise<void> {
+    return await this.repository.clearDatabase();
+  }
 
   async findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]> {
     return await this.repository.findByQuestionsGroup(grupo);

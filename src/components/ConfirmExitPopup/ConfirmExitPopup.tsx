@@ -3,7 +3,18 @@ import { View, Text, Modal, StyleSheet, TouchableOpacity } from 'react-native';
 import QuizButton from '../QuizButton/QuizButton';
 import styles from './styles';
 
-const ConfirmExitPopup = ({ isVisible, onConfirm, onCancel, title, descricao = "", confirmButtonTitle, cancelButtonTitle, showCancelButton = true }) => {
+interface ConfirmExitPopupProps {
+  isVisible: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  title: string;
+  descricao?: string;
+  confirmButtonTitle: string;
+  cancelButtonTitle: string;
+  showCancelButton?: boolean;
+}
+
+const ConfirmExitPopup: React.FC<ConfirmExitPopupProps> = ({ isVisible, onConfirm, onCancel, title, descricao = "", confirmButtonTitle, cancelButtonTitle, showCancelButton = true }) => {
   return (
     <Modal
       animationType="fade"
@@ -20,10 +31,10 @@ const ConfirmExitPopup = ({ isVisible, onConfirm, onCancel, title, descricao = "
           <Text style={styles.subText}>{descricao}</Text>
 
           <View style={styles.buttonContainer}>
-            <QuizButton onPress={onConfirm} text={cancelButtonTitle} color='#1356A1' colorShadow='#1356A1' />
             {showCancelButton && (
-              <QuizButton onPress={onCancel} text={confirmButtonTitle} color="#C12A31" colorShadow="#AA292F" />
+              <QuizButton onPress={onCancel} text={cancelButtonTitle} color='#1356A1' colorShadow='#1356A1' />
             )}
+            <QuizButton onPress={onConfirm} text={confirmButtonTitle} color="#C12A31" colorShadow="#AA292F" />
             <TouchableOpacity />
           </View>
         </View>

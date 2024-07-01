@@ -1,7 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
-export default QuizButton = ({ onPress, text, color = '#1356A1', colorShadow = '#328AE1' }) => {
+interface QuizButtonProps {
+  onPress: () => void;
+  text: string;
+  color?: string;
+  colorShadow?: string;
+}
+
+const QuizButton:React.FC<QuizButtonProps> = ({ onPress, text, color = '#1356A1', colorShadow = '#328AE1' }) => {
   return (
     <TouchableOpacity style={[styles.button, { backgroundColor: color, borderBottomColor: colorShadow }]} onPress={onPress}>
       <Text style={styles.buttonText}>{text}</Text>
@@ -9,3 +16,5 @@ export default QuizButton = ({ onPress, text, color = '#1356A1', colorShadow = '
     </TouchableOpacity>
   );
 };
+
+export default QuizButton;

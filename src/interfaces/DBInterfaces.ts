@@ -16,6 +16,7 @@ export interface IQuestionsGroupRepository {
 }
 
 export interface IQuestionRepository {
+  clearDatabase(): Promise<void>;
   findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]>;
 }
 

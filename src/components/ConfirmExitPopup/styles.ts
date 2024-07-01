@@ -11,18 +11,19 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       borderRadius: 20,
       padding: 20,
+      margin: 20,
       alignItems: 'center',
       elevation: 5, // Sombreamento no Android
     },
     modalText: {
-      marginBottom: 15,
+      marginBottom: 25,
       textAlign: 'center',
       fontSize: 20,
       fontWeight: 'bold',
       color: '#4B4B4B',
     },
     subText: {
-      marginBottom: 80,
+      marginBottom: 60,
       textAlign: 'center',
       fontSize: 16,
       color: '#4B4B4B',

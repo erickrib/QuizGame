@@ -1,6 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { PerfilUsuario } from './ProfileUser';
-import { Question } from './Question';
 
 @Entity('question_student')
 export class QuestionStudent {
@@ -22,6 +21,4 @@ export class QuestionStudent {
     @ManyToMany(() => PerfilUsuario, user => user.questoes_realizadas)
     perfilUsuario!: PerfilUsuario;
 
-    // @OneToMany(() => Question, question => question.questioStudent)
-    // question!: Question;
 }
