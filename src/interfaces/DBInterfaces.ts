@@ -6,8 +6,8 @@ import { CreateQuestionParams } from "../services/QuestionService";
 import { CreateQuestionsGroupParams } from "../services/QuestionsGroupService";
 import { CreateAnswerParams } from "../services/QuestionAnswerService";
 import { QuestionStudent } from "../models/QuestionStudent";
-// import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
-// import { CreateProfileUserParams } from "../services/ProfileUserService";
+import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
+import { CreateProfileUserParams } from "../services/ProfileUserService";
 import { PerfilUsuario } from "../models/ProfileUser";
 
 export interface IQuestionsGroupRepository {
@@ -24,13 +24,13 @@ export interface IQuestionAnswerRepository {
   findByQuestionId(questionId: number): Promise<QuestionAnswer[]>;
 }
 
-// export interface QuestionStudentRepository {
-//   createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent>;
-//   findByPerfilUsuarioId(perfilUsuarioId: number): Promise<QuestionStudent[]>;
-// }
+export interface IQuestionStudentRepository {
+  createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent>;
+  // findByPerfilUsuarioId(perfilUsuarioId: number): Promise<QuestionStudent[]>;
+}
 
-// export interface ProfileUserRepository {
-//   createProfileUser(params: CreateProfileUserParams): Promise<PerfilUsuario>;
-//   findByUserId(userId: number): Promise<PerfilUsuario | undefined>;
-// }
+export interface IProfileUserRepository {
+  createProfileUser(params: CreateProfileUserParams): Promise<PerfilUsuario>;
+  fetchAllProfileUser(): Promise<PerfilUsuario[]>
+}
 

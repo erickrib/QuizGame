@@ -11,6 +11,7 @@ import DATA from './src/database/questions.json';
 import { questionsGroupService } from './src/services';
 import { useEffect } from 'react';
 import { CreateQuestionsGroupParams } from './src/services/QuestionsGroupService';
+import UserView from './src/pages/User/UserView';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,10 @@ export default function App() {
         <Stack.Screen
           name="Escolha grupo"
           component={ChoseGroupQuestions} />
+        <Stack.Screen
+          name='UserView'
+          component={UserView} 
+        />
         <Stack.Screen
           name="GameView"
           component={GameView} />

@@ -3,13 +3,18 @@ import { QuestionsGroup } from "../models/QuestionsGroup";
 import { Question } from "../models/Question";
 import { CreateQuestionsGroupParams } from "../services/QuestionsGroupService";
 import { CreateQuestionParams } from "../services/QuestionService";
-import { IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository } from "../interfaces/DBInterfaces";
+import { IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository } from "../interfaces/DBInterfaces";
 
 import { conn } from "./db";
 import { CreateAnswerParams } from "../services/QuestionAnswerService";
 import { QuestionAnswer } from "../models/QuestionAnswer";
+import { PerfilUsuario } from "../models/ProfileUser";
+import { CreateProfileUserParams } from "../services/ProfileUserService";
+import { QuestionStudent } from "../models/QuestionStudent";
+import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
 
-class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository {
+class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository {
+
   private static instance: SQLiteDatabase | null = null;
   private conn: DataSource;
 
@@ -87,6 +92,41 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     answer.questao = questionDB;
   
     await trans.save(answer);
+  }
+  
+  // Funções de Usuário 
+  async createProfileUser(params: CreateProfileUserParams): Promise<PerfilUsuario> {
+    return await this.conn.transaction(async (trans) => {
+      const perfilUsuario = new PerfilUsuario();
+      perfilUsuario.nome = params.nome;
+
+      await trans.save(perfilUsuario);
+
+      return await trans.save(perfilUsuario);
+    });
+  }
+
+  async fetchAllProfileUser(): Promise<PerfilUsuario[]> {
+    return await this.conn.manager.find(PerfilUsuario);
+  }
+  
+  async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
+    return await this.conn.transaction(async (trans) => {
+      // Encontre o perfil de usuário associado
+      const perfilUsuario = await trans.findOneOrFail(PerfilUsuario, { where: { id: params.perfilUsuarioId } });
+
+      // Encontre a questão associada
+      const question = await trans.findOneOrFail(Question, { where: { id: params.atividadeId } });
+
+      // Crie o objeto QuestionStudent
+      const questionStudent = new QuestionStudent();
+      questionStudent.perfilUsuario = perfilUsuario;
+      questionStudent.questao = question;
+      questionStudent.statusResposta = params.statusResposta;
+      questionStudent.dataResposta = new Date(); 
+
+      return await trans.save(questionStudent);
+    });
   }
   
   // Funções de Busca de Grupo de Questões

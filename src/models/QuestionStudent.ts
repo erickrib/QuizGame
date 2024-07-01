@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinColumn, Relation, ManyToOne, OneToOne } from 'typeorm';
 import { PerfilUsuario } from './ProfileUser';
+import { Question } from './Question';
 
 @Entity('question_student')
 export class QuestionStudent {
@@ -18,7 +19,14 @@ export class QuestionStudent {
     @Column({ name: 'codigo_atividade', type: 'varchar', nullable: true })
     codigoAtividade?: string;
 
-    @ManyToMany(() => PerfilUsuario, user => user.questoes_realizadas)
+    @Column({ name: 'data_resposta', type: 'text', nullable: true })
+    dataResposta: Date;
+
+    @
+    ManyToOne(() => PerfilUsuario, user => user.questoes_realizadas)
     perfilUsuario!: PerfilUsuario;
+
+    @OneToOne(() => Question, question => question.questao_respondida)
+    questao!: Question;
 
 }

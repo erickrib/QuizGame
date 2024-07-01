@@ -8,6 +8,7 @@ import {
   } from "typeorm";
   import { QuestionsGroup } from "./QuestionsGroup";
   import { QuestionAnswer } from "./QuestionAnswer";
+import { QuestionStudent } from "./QuestionStudent";
   
   @Entity("question")
   export class Question {
@@ -26,4 +27,6 @@ import {
     @OneToOne(() => QuestionAnswer, answer => answer.questao, { cascade: true })
     resposta!: Relation<QuestionAnswer>;
 
+    @OneToOne(() => QuestionStudent, questionStudent => questionStudent.questao)
+    questao_respondida!: Relation<QuestionStudent>;
   }

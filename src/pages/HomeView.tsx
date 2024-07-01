@@ -5,11 +5,11 @@ import { Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import QuizButton from '../components/QuizButton/QuizButton';
 
-const HomeView = () => {
+const HomeView: React.FC = () => {
     const navi = useNavigation<any>();
 
     const handleStartQuiz = () => {
-        navi.navigate("Escolha grupo");
+        navi.navigate("UserView");
     };
 
     return (

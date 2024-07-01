@@ -9,6 +9,7 @@ import { QuestionsGroup } from '../models/QuestionsGroup';
 import { questionAnswerService } from '../services';
 import { QuestionAnswer } from '../models/QuestionAnswer';
 import AnswerOption from '../components/AnswerOption/AnswerOption';
+import { Question } from '../models/Question';
 
 interface GameViewParams {
     group: QuestionsGroup;
@@ -51,8 +52,8 @@ const GameView: React.FC = () => {
     const route = useRoute();
     const { group } = route.params as GameViewParams;
 
-    const currentQuestion = group.questions[currentQuestionIndex];
-    const currentAnswer = answers[0];
+    const currentQuestion: Question = group.questions[currentQuestionIndex];
+    const currentAnswer: QuestionAnswer = answers[0];
 
     const fetchAnswers = async () => {
         try {
@@ -69,11 +70,13 @@ const GameView: React.FC = () => {
         navigation.navigate('Escolha grupo');
     }
 
-    const handlePress = (answer: string) => {
+    const handleSelectAnswer = (answer: string) => {
         setSelectedAnswer(answer);
     };
 
+    // Função para verificar se a resposta está correta
     const checkAnswer = () => {
+
         if (selectedAnswer !== null) {
             const correctAnswer = currentAnswer.resposta_correta;
             const isCorrect = selectedAnswer === correctAnswer;
@@ -88,49 +91,55 @@ const GameView: React.FC = () => {
                     indicesCertas: [...prevState.idCertas, currentQuestion.id],
                 }));
 
-            } else {
-                setFeedback({ ...feedback, type: "error", visible: true });
-
-                setAnsweredQuestions(prevState => ({
-                    ...prevState,
-                    totalRespondidas: prevState.totalRespondidas + 1,
-                    totalErradas: prevState.totalErradas + 1,
-                    indicesErradas: [...prevState.idErradas, currentQuestion.id],
-                }));
+                return
             }
+
+            setFeedback({ ...feedback, type: "error", visible: true });
+            setAnsweredQuestions(prevState => ({
+                ...prevState,
+                totalRespondidas: prevState.totalRespondidas + 1,
+                totalErradas: prevState.totalErradas + 1,
+                indicesErradas: [...prevState.idErradas, currentQuestion.id],
+            }));
+
         }
     };
 
+    // Função para selecionar a próxima pergunta
     const selectNextQuestion = (group, answeredQuestions, currentQuestionIndex) => {
+        // Verifica se ainda há perguntas a serem respondidas
         if (currentQuestionIndex + 1 < group.questions.length) {
             return currentQuestionIndex + 1;
         }
-    
-        const unansweredQuestions = group.questions.filter((_, index) => 
-           !answeredQuestions.idCertas.includes(index) && 
-           !answeredQuestions.idErradas.includes(index)
+
+        // Filtra as perguntas não respondidas
+        const unansweredQuestions = group.questions.filter((_, index) =>
+            !answeredQuestions.idCertas.includes(index) &&
+            !answeredQuestions.idErradas.includes(index)
         );
-    
+
+        // Seleciona uma pergunta aleatória dentre as não respondidas
         if (unansweredQuestions.length > 0) {
             const randomUnansweredIndex = Math.floor(Math.random() * unansweredQuestions.length);
             const selectedIndex = unansweredQuestions[randomUnansweredIndex].id;
-    
+
             const validIndex = group.questions.findIndex(question => question.id === selectedIndex);
-            return validIndex!== -1? validIndex : null; // Retorna null se não encontrar uma pergunta válida
+            return validIndex !== -1 ? validIndex : null; // Retorna null se não encontrar uma pergunta válida
         }
-    
-        return null; 
+
+        return null;
     };
-    
+
+    // Função para avançar para a próxima pergunta
     const handleNextQuestion = () => {
-        setFeedback({...feedback, visible: false });
+        setFeedback({ ...feedback, visible: false });
         setSelectedAnswer(null);
-    
+
         if (answeredQuestions.totalRespondidas >= MAX_QUESTIONS) {
             handleOpenPopupFinishGame();
         } else {
             const nextQuestionIndex = selectNextQuestion(group, answeredQuestions, currentQuestionIndex);
-            if (nextQuestionIndex!== null) {
+            if (nextQuestionIndex !== null) {
                 setCurrentQuestionIndex(nextQuestionIndex);
             }
         }
@@ -168,21 +177,21 @@ const GameView: React.FC = () => {
                         <AnswerOption
                             answer={currentAnswer?.resposta_1}
                             isActive={selectedAnswer == currentAnswer?.resposta_1}
-                            onPress={handlePress}
+                            onPress={handleSelectAnswer}
                         />
                         <AnswerOption
                             answer={currentAnswer?.resposta_2}
                             isActive={selectedAnswer == currentAnswer?.resposta_2}
-                            onPress={handlePress}
+                            onPress={handleSelectAnswer}
                         />
                         <AnswerOption
                             answer={currentAnswer?.resposta_3}
                             isActive={selectedAnswer == currentAnswer?.resposta_3}
-                            onPress={handlePress} />
+                            onPress={handleSelectAnswer} />
                         <AnswerOption
                             answer={currentAnswer?.resposta_4}
                             isActive={selectedAnswer == currentAnswer?.resposta_4}
-                            onPress={handlePress} />
+                            onPress={handleSelectAnswer} />
                     </View>
                 </View>
 

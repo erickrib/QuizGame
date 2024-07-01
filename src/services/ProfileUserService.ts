@@ -1,16 +1,23 @@
-// import { ProfileUserRepository } from "../interfaces/DBInterfaces";
-// import { PerfilUsuario } from "../models/ProfileUser";
+import { IProfileUserRepository } from "../interfaces/DBInterfaces";
+import { PerfilUsuario } from "../models/ProfileUser";
 
 
-// export interface CreateProfileUserParams {
-//     id: number;
-//     userId: number;
-//   }
+export interface CreateProfileUserParams {
+  nome: string;
+}
 
-// export const createProfileUser = async (repository: ProfileUserRepository, params: CreateProfileUserParams): Promise<PerfilUsuario> => {
-//   return await repository.createProfileUser(params);
-// };
+export class ProfileUserService {
+  private repository: IProfileUserRepository;
 
-// export const findProfileUserByUserId = async (repository: ProfileUserRepository, userId: number): Promise<PerfilUsuario | undefined> => {
-//   return await repository.findByUserId(userId);
-// };
+  constructor(repository: IProfileUserRepository) {
+    this.repository = repository;
+  }
+
+  async create(params: CreateProfileUserParams): Promise<PerfilUsuario> {
+    return await this.repository.createProfileUser(params);
+  }
+
+  async fetchAll(): Promise<PerfilUsuario[]> {
+    return await this.repository.fetchAllProfileUser();
+  }
+}
