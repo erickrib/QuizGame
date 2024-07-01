@@ -1,6 +1,6 @@
 import { Question } from "../models/Question";
 import { QuestionsGroup } from "../models/QuestionsGroup";
-import { QuestionRepository } from "../interfaces/DatabaseInterfaces";
+import { IQuestionRepository } from "../interfaces/DBInterfaces";
 
 export type CreateQuestionParams = {
   nome: string;
@@ -9,11 +9,18 @@ export type CreateQuestionParams = {
   resposta: {};
 };
 
-export async function create(repository: QuestionRepository, params: CreateQuestionParams): Promise<Question> {
-  return await repository.createQuestion(params)
-}
+export class QuestionsService {
+  private repository: IQuestionRepository;
 
-export async function findByQuestionsGroup(repository: QuestionRepository, grupo: Partial<QuestionsGroup>) {
-  return await repository.findByQuestionsGroup(grupo)
-}
+  constructor(repository: IQuestionRepository) {
+    this.repository = repository;
+  }
 
+  // async create(params: CreateQuestionParams): Promise<Question> {
+  //   return await this.repository.createQuestion(params);
+  // }
+
+  async findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]> {
+    return await this.repository.findByQuestionsGroup(grupo);
+  }
+}

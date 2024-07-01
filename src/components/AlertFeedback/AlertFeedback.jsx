@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 import QuizButton from '../QuizButton/QuizButton';
 
-const AlertFeedback = ({ type, visible, onClose }) => {
+const AlertFeedback = ({ type, onClose }) => {
   const isSuccess = type === 'success';
 
   const handleContinue = () => {
@@ -27,7 +27,7 @@ const AlertFeedback = ({ type, visible, onClose }) => {
           </Text>
         </View>
 
-        <QuizButton color='#C12A31'  colorShadow='#D73138' text="Continuar" onPress={handleContinue} />
+        <QuizButton color={isSuccess ? '#578626' : '#C12A31'}  colorShadow={isSuccess ? '#60932A' : '#D73138'} text="Continuar" onPress={handleContinue} />
         </View>
       </View>
   );

@@ -1,0 +1,227 @@
+[
+    {
+        "nome": "Questões de Matemática",
+        "questions": [
+            {
+                "nome": "Qual é o resultado de 82 + 57?",
+                "descricao": "Calcule a soma.",
+                "resposta": {
+                    "resposta_1": "139",
+                    "resposta_2": "138",
+                    "resposta_3": "135",
+                    "resposta_4": "143",
+                    "resposta_correta": "139"
+                }
+            },
+            {
+                "nome": "Quanto é 45 - 18?",
+                "descricao": "Efetue a subtração.",
+                "resposta": {
+                    "resposta_1": "27",
+                    "resposta_2": "28",
+                    "resposta_3": "26",
+                    "resposta_4": "29",
+                    "resposta_correta": "27"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 7 * 8?",
+                "descricao": "Realize a multiplicação.",
+                "resposta": {
+                    "resposta_1": "54",
+                    "resposta_2": "55",
+                    "resposta_3": "56",
+                    "resposta_4": "57",
+                    "resposta_correta": "56"
+                }
+            },
+            {
+                "nome": "Quanto é 98 / 7?",
+                "descricao": "Efetue a divisão.",
+                "resposta": {
+                    "resposta_1": "14",
+                    "resposta_2": "12",
+                    "resposta_3": "16",
+                    "resposta_4": "18",
+                    "resposta_correta": "14"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 32 + 19?",
+                "descricao": "Calcule a soma.",
+                "resposta": {
+                    "resposta_1": "51",
+                    "resposta_2": "50",
+                    "resposta_3": "52",
+                    "resposta_4": "53",
+                    "resposta_correta": "51"
+                }
+            },
+            {
+                "nome": "Quanto é 73 - 29?",
+                "descricao": "Efetue a subtração.",
+                "resposta": {
+                    "resposta_1": "44",
+                    "resposta_2": "45",
+                    "resposta_3": "46",
+                    "resposta_4": "47",
+                    "resposta_correta": "44"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 6 * 9?",
+                "descricao": "Realize a multiplicação.",
+                "resposta": {
+                    "resposta_1": "53",
+                    "resposta_2": "54",
+                    "resposta_3": "55",
+                    "resposta_4": "56",
+                    "resposta_correta": "54"
+                }
+            },
+            {
+                "nome": "Quanto é 84 / 7?",
+                "descricao": "Efetue a divisão.",
+                "resposta": {
+                    "resposta_1": "11",
+                    "resposta_2": "12",
+                    "resposta_3": "13",
+                    "resposta_4": "14",
+                    "resposta_correta": "12"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 17 + 34?",
+                "descricao": "Calcule a soma.",
+                "resposta": {
+                    "resposta_1": "49",
+                    "resposta_2": "50",
+                    "resposta_3": "51",
+                    "resposta_4": "52",
+                    "resposta_correta": "51"
+                }
+            },
+            {
+                "nome": "Quanto é 64 - 28?",
+                "descricao": "Efetue a subtração.",
+                "resposta": {
+                    "resposta_1": "36",
+                    "resposta_2": "37",
+                    "resposta_3": "38",
+                    "resposta_4": "39",
+                    "resposta_correta": "36"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 9 * 7?",
+                "descricao": "Realize a multiplicação.",
+                "resposta": {
+                    "resposta_1": "61",
+                    "resposta_2": "62",
+                    "resposta_3": "63",
+                    "resposta_4": "64",
+                    "resposta_correta": "63"
+                }
+            },
+            {
+                "nome": "Quanto é 72 / 8?",
+                "descricao": "Efetue a divisão.",
+                "resposta": {
+                    "resposta_1": "8",
+                    "resposta_2": "9",
+                    "resposta_3": "10",
+                    "resposta_4": "11",
+                    "resposta_correta": "9"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 25 + 38?",
+                "descricao": "Calcule a soma.",
+                "resposta": {
+                    "resposta_1": "62",
+                    "resposta_2": "63",
+                    "resposta_3": "64",
+                    "resposta_4": "65",
+                    "resposta_correta": "63"
+                }
+            },
+            {
+                "nome": "Quanto é 91 - 37?",
+                "descricao": "Efetue a subtração.",
+                "resposta": {
+                    "resposta_1": "53",
+                    "resposta_2": "54",
+                    "resposta_3": "55",
+                    "resposta_4": "56",
+                    "resposta_correta": "54"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 8 * 6?",
+                "descricao": "Realize a multiplicação.",
+                "resposta": {
+                    "resposta_1": "46",
+                    "resposta_2": "47",
+                    "resposta_3": "48",
+                    "resposta_4": "49",
+                    "resposta_correta": "48"
+                }
+            },
+            {
+                "nome": "Quanto é 80 / 10?",
+                "descricao": "Efetue a divisão.",
+                "resposta": {
+                    "resposta_1": "7",
+                    "resposta_2": "8",
+                    "resposta_3": "9",
+                    "resposta_4": "10",
+                    "resposta_correta": "8"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 38 + 27?",
+                "descricao": "Calcule a soma.",
+                "resposta": {
+                    "resposta_1": "63",
+                    "resposta_2": "64",
+                    "resposta_3": "65",
+                    "resposta_4": "66",
+                    "resposta_correta": "65"
+                }
+            },
+            {
+                "nome": "Quanto é 68 - 31?",
+                "descricao": "Efetue a subtração.",
+                "resposta": {
+                    "resposta_1": "36",
+                    "resposta_2": "37",
+                    "resposta_3": "38",
+                    "resposta_4": "39",
+                    "resposta_correta": "37"
+                }
+            },
+            {
+                "nome": "Qual é o resultado de 12 * 9?",
+                "descricao": "Realize a multiplicação.",
+                "resposta": {
+                    "resposta_1": "108",
+                    "resposta_2": "109",
+                    "resposta_3": "110",
+                    "resposta_4": "111",
+                    "resposta_correta": "108"
+                }
+            },
+            {
+                "nome": "Quanto é 96 / 8?",
+                "descricao": "Efetue a divisão.",
+                "resposta": {
+                    "resposta_1": "10",
+                    "resposta_2": "11",
+                    "resposta_3": "12",
+                    "resposta_4": "13",
+                    "resposta_correta": "12"
+                }
+            }
+        ]
+    }
+]

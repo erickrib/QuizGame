@@ -9,18 +9,18 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%'
 
-    },
+    }, 
     container: {
         padding: 20,
+        paddingBottom: 40,
         borderRadius: 10,
         backgroundColor: '#fff',
-        margin: 5,
-        height: 200,
         justifyContent: 'center',
         alignItems: 'center',
     },
     containerDetais: {
         marginTop: 20,
+        marginBottom: 30,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,

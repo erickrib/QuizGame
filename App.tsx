@@ -1,61 +1,57 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useDatabaseInitialize } from './src/hooks/use-database-initialize';
-import { sqliteService } from './src/database/SQLiteDatabaseService';
-import QuestionGroup from './src/services/QuestionsGroupService';
-import { CreateQuestionsGroupParams } from './src/services/QuestionsGroupService';
-import { useEffect } from 'react';
-import HomeView from './src/pages/HomeView';
-import ChoseGroupQuestions from './src/pages/ChooseGroupQuestions';
-
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import HomeView from './src/pages/HomeView';
+import ChoseGroupQuestions from './src/pages/ChooseGroupQuestions';
 import GameView from './src/pages/GameView';
+import { useDatabaseInitialize } from './src/hooks/use-database-initialize';
+
+import DATA from './src/database/questions.json';
+import { questionsGroupService } from './src/services';
+import { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   const { ready } = useDatabaseInitialize();
 
-  const handleCreateQuestion = async () => {
+  const handlePopulateDB = async () => {
+
     try {
-      const newGroupParams: CreateQuestionsGroupParams = {
-        nome: 'Nome do grupo de questões',
-        questions: [
-          {
-            nome: 'Nome da questão',
-            descricao: 'Descrição da questão',
-          },
-        ],
-      };
-
-      const repository = sqliteService;
-
-      await QuestionGroup.create(repository, newGroupParams);
+      for (const groupParams of DATA) {
+        await questionsGroupService.create(groupParams);
+      }
 
     } catch (error) {
-      console.error('Failed to create question:', error);
+      console.error('Falha ao popular BD:', error);
     }
   };
 
-  const handleFetchAllQuestionsGroups = async () => {
+  const checkDatabaseFilled = async () => {
     try {
-      const repository = sqliteService;
+      const groups = await questionsGroupService.fetchAll();
+      return groups.length > 0;
 
-      const groups = await QuestionGroup.fetchAll(repository);
-
-      console.log('Groups:', groups.length);
     } catch (error) {
-      console.error('Failed to fetch all questions groups:', error);
+      console.error('Erro ao verificar se o BD está preenchido:', error);
+      return false;
     }
-  }
+  };
 
   useEffect(() => {
-    if (ready) {
-      // handleCreateQuestion();
-      handleFetchAllQuestionsGroups();
-    }
+    const fetchData = async () => {
+      const isFilled = await checkDatabaseFilled();
+
+      if (ready && !isFilled) {
+        await handlePopulateDB();
+      } else {
+        console.info('Banco de dados já preenchido');
+      }
+    };
+
+    fetchData();
   }, [ready]);
 
   return (
@@ -76,13 +72,5 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 
