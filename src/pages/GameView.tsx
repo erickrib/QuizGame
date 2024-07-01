@@ -10,9 +10,12 @@ import { questionAnswerService } from '../services';
 import { QuestionAnswer } from '../models/QuestionAnswer';
 import AnswerOption from '../components/AnswerOption/AnswerOption';
 import { Question } from '../models/Question';
+import { questionStudentService } from '../services';
+import { PerfilUsuario } from '../models/ProfileUser';
 
 interface GameViewParams {
     group: QuestionsGroup;
+    user: PerfilUsuario;
 }
 
 type FeedbackState = {
@@ -50,7 +53,7 @@ const GameView: React.FC = () => {
 
     const navigation = useNavigation<any>();
     const route = useRoute();
-    const { group } = route.params as GameViewParams;
+    const { group, user } = route.params as GameViewParams;
 
     const currentQuestion: Question = group.questions[currentQuestionIndex];
     const currentAnswer: QuestionAnswer = answers[0];
@@ -67,7 +70,7 @@ const GameView: React.FC = () => {
     }
 
     const handleNavigate = () => {
-        navigation.navigate('ChoseGroupQuestions');
+        navigation.navigate('ChoseGroupQuestions', { user });
     }
 
     const handleSelectAnswer = (answer: string) => {
@@ -75,34 +78,43 @@ const GameView: React.FC = () => {
     };
 
     // Função para verificar se a resposta está correta
-    const checkAnswer = () => {
+    const checkAnswer = async () => {
+        if (!selectedAnswer) return;
 
-        if (selectedAnswer !== null) {
-            const correctAnswer = currentAnswer.resposta_correta;
-            const isCorrect = selectedAnswer === correctAnswer;
+        const { resposta_correta: correctAnswer } = currentAnswer;
+        const isCorrect = selectedAnswer === correctAnswer;
+        const type = isCorrect ? "success" : "error";
+        setFeedback({ ...feedback, type, visible: true })
 
-            if (isCorrect) {
-                setFeedback({ ...feedback, type: "success", visible: true });
+        updateAnsweredQuestions(isCorrect);
 
-                setAnsweredQuestions(prevState => ({
-                    ...prevState,
-                    totalRespondidas: prevState.totalRespondidas + 1,
-                    totalCertas: prevState.totalCertas + 1,
-                    indicesCertas: [...prevState.idCertas, currentQuestion.id],
-                }));
+        await logResponse(isCorrect);
+    };
 
-                return
-            }
-
-            setFeedback({ ...feedback, type: "error", visible: true });
-            setAnsweredQuestions(prevState => ({
-                ...prevState,
-                totalRespondidas: prevState.totalRespondidas + 1,
+    // Atualiza o estado das perguntas respondidas com base na correção
+    const updateAnsweredQuestions = (isCorrect) => {
+        setAnsweredQuestions(prevState => ({
+            ...prevState,
+            totalRespondidas: prevState.totalRespondidas + 1,
+            ...(isCorrect && {
+                totalCertas: prevState.totalCertas + 1,
+                indicesCertas: [...prevState.idCertas, currentQuestion.id]
+            }),
+            ...(isCorrect || {
                 totalErradas: prevState.totalErradas + 1,
-                indicesErradas: [...prevState.idErradas, currentQuestion.id],
-            }));
+                indicesErradas: [...prevState.idErradas, currentQuestion.id]
+            })
+        }));
+    };
 
-        }
+    // Registra a resposta do aluno
+    const logResponse = async (isCorrect) => {
+        const statusResposta = isCorrect ? 'correct' : 'incorrect';
+        await questionStudentService.create({
+            id_atividade: currentQuestion.id,
+            id_perfil_usuario: user.id,
+            status_resposta: statusResposta,
+        });
     };
 
     // Função para selecionar a próxima pergunta

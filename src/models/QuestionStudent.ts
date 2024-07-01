@@ -7,9 +7,6 @@ export class QuestionStudent {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ name: 'questao_id', type: 'bigint' })
-    atividadeId!: number;
-
     @Column({ name: 'status_resposta', type: 'varchar', nullable: true })
     statusResposta?: string;
 

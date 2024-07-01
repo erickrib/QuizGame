@@ -26,7 +26,7 @@ export interface IQuestionAnswerRepository {
 
 export interface IQuestionStudentRepository {
   createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent>;
-  // findByPerfilUsuarioId(perfilUsuarioId: number): Promise<QuestionStudent[]>;
+  fetchAllQuestionStudent(): Promise<QuestionStudent[]>;
 }
 
 export interface IProfileUserRepository {

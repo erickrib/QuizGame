@@ -1,6 +1,3 @@
-// views/HomeView.tsx
-
-import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import QuizButton from '../components/QuizButton/QuizButton';

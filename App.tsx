@@ -12,6 +12,7 @@ import { questionsGroupService } from './src/services';
 import { useEffect } from 'react';
 import { CreateQuestionsGroupParams } from './src/services/QuestionsGroupService';
 import UserView from './src/pages/UserView';
+import { questionsService } from './src/services';
 
 const Stack = createNativeStackNavigator();
 

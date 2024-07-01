@@ -20,7 +20,7 @@ const ChoseGroupQuestions: React.FC = () => {
     const { user } = route.params as ChoseGroupQuestionsParams;
 
     const handleNavigate = (group: QuestionsGroup) => {
-        navigation.navigate('GameView', { group });
+        navigation.navigate('GameView', { group, user });
     }
 
     useEffect(() => {

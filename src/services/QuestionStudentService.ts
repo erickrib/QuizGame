@@ -2,9 +2,9 @@ import { IQuestionStudentRepository } from "../interfaces/DBInterfaces";
 import { QuestionStudent } from "../models/QuestionStudent";
 
 export interface CreateQuestionStudentParams {
-    perfilUsuarioId: number;
-    atividadeId: number;
-    statusResposta?: string;
+    id_perfil_usuario: number;
+    id_atividade: number;
+    status_resposta?: string;
     active?: boolean;
     codigoAtividade?: string;
   }
@@ -16,9 +16,13 @@ export interface CreateQuestionStudentParams {
       this.repository = repository;
     }
   
-    async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
+    async create(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
       return await this.repository.createQuestionStudent(params);
     }
+
+    async fetchAll(): Promise<QuestionStudent[]> {
+        return await this.repository.fetchAllQuestionStudent()
   }
+}
 
 

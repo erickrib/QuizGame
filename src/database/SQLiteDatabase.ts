@@ -20,7 +20,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
   constructor() {
      this.conn = conn;
-   //  this.clearDatabase();
+// this.clearDatabase();
   }
 
   public static getInstance(): SQLiteDatabase {
@@ -113,20 +113,25 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
     return await this.conn.transaction(async (trans) => {
       // Encontre o perfil de usuário associado
-      const perfilUsuario = await trans.findOneOrFail(PerfilUsuario, { where: { id: params.perfilUsuarioId } });
+      const perfilUsuario = await trans.findOneOrFail(PerfilUsuario, { where: { id: params.id_perfil_usuario } });
 
-      // Encontre a questão associada
-      const question = await trans.findOneOrFail(Question, { where: { id: params.atividadeId } });
+      // Encontra a questão associada
+      const question = await trans.findOneOrFail(Question, { where: { id: params.id_atividade } });
 
       // Crie o objeto QuestionStudent
       const questionStudent = new QuestionStudent();
       questionStudent.perfilUsuario = perfilUsuario;
       questionStudent.questao = question;
-      questionStudent.statusResposta = params.statusResposta;
+
+      questionStudent.statusResposta = params.status_resposta;
       questionStudent.dataResposta = new Date(); 
 
       return await trans.save(questionStudent);
     });
+  }
+
+  async fetchAllQuestionStudent(): Promise<QuestionStudent[]> {
+    return await this.conn.manager.find(QuestionStudent);
   }
   
   // Funções de Busca de Grupo de Questões
@@ -159,9 +164,11 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       await trans.delete(QuestionAnswer, {});
       await trans.delete(Question, {});
       await trans.delete(QuestionsGroup, {});
+      await trans.delete(QuestionStudent, {});
+      await trans.delete(PerfilUsuario, {});
     });
 
-    console.log('Banco de dados limpo!');
+    console.warn('Banco de dados limpo!');
   }
 }
 
