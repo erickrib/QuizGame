@@ -85,14 +85,17 @@ export default function App() {
           options={{ headerShown: false }}
           component={HomeView} />
         <Stack.Screen
-          name="Escolha grupo"
+          name="ChoseGroupQuestions"
+          options={{ title: 'Escolha Grupo' }}
           component={ChoseGroupQuestions} />
         <Stack.Screen
           name='UserView'
+          options={{ title: 'Cadastro' }}
           component={UserView} 
         />
         <Stack.Screen
           name="GameView"
+          options={{ title: 'Quiz' }}
           component={GameView} />
       </Stack.Navigator>
     </NavigationContainer>

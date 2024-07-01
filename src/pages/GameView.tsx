@@ -67,7 +67,7 @@ const GameView: React.FC = () => {
     }
 
     const handleNavigate = () => {
-        navigation.navigate('Escolha grupo');
+        navigation.navigate('ChoseGroupQuestions');
     }
 
     const handleSelectAnswer = (answer: string) => {

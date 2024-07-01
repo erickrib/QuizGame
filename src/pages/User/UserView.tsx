@@ -14,21 +14,24 @@ const UserView: React.FC = () => {
 
   const navigation = useNavigation<any>();
 
-  const handleNavigate = () => {    
-    console.log(selectedUsuario);
+  const handleNavigate = () => { 
+    
+    console.log('selectedUsuario:', selectedUsuario);
+    
         
-    if (isUsuarioSelected) {
+    if (!isUsuarioSelected) {
       Alert.alert('Não foi possível continuar', 'Adicione um novo usuário ou selecione um existente');
       return;
     }
 
-    navigation.navigate('Escolha grupo', { usuario: selectedUsuario });
+    navigation.navigate('ChoseGroupQuestions', { user: selectedUsuario });
   };
 
   const fetchUsuarios = async () => {
     const users = await profileUserService.fetchAll();
     setUsuarios(users);
     setSelectedUsuario(users[0]);
+    setIsUsuarioSelected(true);
 
   };
 
@@ -45,6 +48,7 @@ const UserView: React.FC = () => {
   useEffect(() => {
     fetchUsuarios();
   }, []);
+  
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -54,7 +58,7 @@ const UserView: React.FC = () => {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, isUsuarioSelected, selectedUsuario]);
 
   return (
     <SafeAreaView>
