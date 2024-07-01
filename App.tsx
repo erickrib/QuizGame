@@ -11,7 +11,7 @@ import DATA from './src/database/questions.json';
 import { questionsGroupService } from './src/services';
 import { useEffect } from 'react';
 import { CreateQuestionsGroupParams } from './src/services/QuestionsGroupService';
-import UserView from './src/pages/User/UserView';
+import UserView from './src/pages/UserView';
 
 const Stack = createNativeStackNavigator();
 

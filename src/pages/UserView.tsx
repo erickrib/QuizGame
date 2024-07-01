@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, SafeAreaView, View } from 'react-native';
-import UserList from './UserList';
-import AddUserForm from './AddUserForm';
-import { profileUserService } from '../../services';
-import { CreateProfileUserParams } from '../../services/ProfileUserService';
-import { PerfilUsuario } from '../../models/ProfileUser';
+import UserList from '../components/UserList/UserList';
+import AddUserForm from '../components/AddUserForm/AddUserForm';
+import { profileUserService } from '../services';
+import { CreateProfileUserParams } from '../services/ProfileUserService';
+import { PerfilUsuario } from '../models/ProfileUser';
 import { useNavigation } from '@react-navigation/native';
 
 const UserView: React.FC = () => {
