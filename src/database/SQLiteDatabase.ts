@@ -20,7 +20,6 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
   constructor() {
      this.conn = conn;
-// this.clearDatabase();
   }
 
   public static getInstance(): SQLiteDatabase {
