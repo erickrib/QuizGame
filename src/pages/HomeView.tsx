@@ -12,6 +12,8 @@ const HomeView: React.FC = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Quiz</Text>
+            <Text>
+      </Text>
             <QuizButton text={"Start"} onPress={handleStartQuiz} />
         </SafeAreaView>
     );
