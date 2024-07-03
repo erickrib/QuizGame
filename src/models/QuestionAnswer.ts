@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Relation } from "typeorm";
 import { Question } from "./Question";
 
-@Entity("question_nswer")
+@Entity("question_answer")
 export class QuestionAnswer {
   @PrimaryGeneratedColumn('increment')
   id!: number;

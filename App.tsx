@@ -75,7 +75,9 @@ export default function App() {
       }
     };
 
-    fetchData();
+   fetchData();
+
+  // questionsService.clearDatabase()
   }, [ready]);
 
   return (

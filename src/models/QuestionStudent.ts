@@ -17,13 +17,14 @@ export class QuestionStudent {
     codigoAtividade?: string;
 
     @Column({ name: 'data_resposta', type: 'text', nullable: true })
-    dataResposta: Date;
+    dataResposta: string;
 
     @
-    ManyToOne(() => PerfilUsuario, user => user.questoes_realizadas)
+    ManyToOne(() => PerfilUsuario, user => user.questoes_realizadas, { cascade: true })
     perfilUsuario!: PerfilUsuario;
 
-    @OneToOne(() => Question, question => question.questao_respondida)
+    @OneToOne(() => Question, question => question.questao_respondida, { cascade: true })
+    @JoinColumn()
     questao!: Question;
 
 }

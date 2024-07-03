@@ -112,21 +112,33 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   
   async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
     return await this.conn.transaction(async (trans) => {
-      // Encontre o perfil de usuário associado
-      const perfilUsuario = await trans.findOneOrFail(PerfilUsuario, { where: { id: params.id_perfil_usuario } });
+      try {
+        console.log('Iniciando transação para criar QuestionStudent');
 
-      // Encontra a questão associada
-      const question = await trans.findOneOrFail(Question, { where: { id: params.id_atividade } });
+        // Encontre o perfil de usuário associado
+        const perfilUsuario = await trans.findOneOrFail(PerfilUsuario, { where: { id: params.id_perfil_usuario } });
+        console.log('PerfilUsuario encontrado:', perfilUsuario);
 
-      // Crie o objeto QuestionStudent
-      const questionStudent = new QuestionStudent();
-      questionStudent.perfilUsuario = perfilUsuario;
-      questionStudent.questao = question;
+        // Encontra a questão associada
+        const question = await trans.findOneOrFail(Question, { where: { id: params.id_atividade } });
+        console.log('Question encontrada:', question);
 
-      questionStudent.statusResposta = params.status_resposta;
-      questionStudent.dataResposta = new Date(); 
+        // Crie o objeto QuestionStudent
+        const questionStudent = new QuestionStudent();
+        questionStudent.perfilUsuario = perfilUsuario;
+        questionStudent.questao = question;
+        questionStudent.statusResposta = params.status_resposta;
+        questionStudent.dataResposta = new Date().toISOString();
+        console.log('QuestionStudent criado:', questionStudent);
 
-      return await trans.save(questionStudent);
+        const savedQuestionStudent = await trans.save(questionStudent);
+        console.log('QuestionStudent salvo:', savedQuestionStudent);
+
+        return savedQuestionStudent;
+      } catch (error) {
+        console.error('Erro ao criar QuestionStudent:', error);
+        throw new Error('Erro ao criar QuestionStudent');
+      }
     });
   }
 
@@ -162,11 +174,15 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     // Remove todos os registros de todas as tabelas
     await conn.transaction(async (trans) => {
       await trans.delete(QuestionAnswer, {});
-      await trans.delete(Question, {});
-      await trans.delete(QuestionsGroup, {});
+
       await trans.delete(QuestionStudent, {});
+
+      await trans.delete(Question, {});
+
+      await trans.delete(QuestionsGroup, {});
+
       await trans.delete(PerfilUsuario, {});
-    });
+  });
 
     console.warn('Banco de dados limpo!');
   }
