@@ -8,7 +8,7 @@ import {
   } from "typeorm";
   import { QuestionsGroup } from "./QuestionsGroup";
   import { QuestionAnswer } from "./QuestionAnswer";
-import { QuestionStudent } from "./QuestionStudent";
+  import { QuestionStudent } from "./QuestionStudent";
   
   @Entity("question")
   export class Question {
