@@ -11,11 +11,11 @@ import { QuestionAnswer } from '../models/QuestionAnswer';
 import AnswerOption from '../components/AnswerOption/AnswerOption';
 import { Question } from '../models/Question';
 import { questionStudentService } from '../services';
-import { PerfilUsuario } from '../models/ProfileUser';
+import { User } from '../models/User';
 
 interface GameViewParams {
     group: QuestionsGroup;
-    user: PerfilUsuario;
+    user: User;
 }
 
 type FeedbackState = {

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinColumn, Relation, ManyToOne, OneToOne } from 'typeorm';
-import { PerfilUsuario } from './ProfileUser';
+import { User } from './User';
 import { Question } from './Question';
 
 @Entity('question_student')
@@ -20,8 +20,8 @@ export class QuestionStudent {
     dataResposta: string;
 
     @
-    ManyToOne(() => PerfilUsuario, user => user.questoes_realizadas, { cascade: true })
-    perfilUsuario!: PerfilUsuario;
+    ManyToOne(() => User, user => user.questoes_realizadas, { cascade: true })
+    perfilUsuario!: User;
 
     @OneToOne(() => Question, question => question.questao_respondida, { cascade: true })
     @JoinColumn()

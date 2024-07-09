@@ -3,13 +3,13 @@ import { Alert, Button, SafeAreaView, View } from 'react-native';
 import UserList from '../components/UserList/UserList';
 import AddUserForm from '../components/AddUserForm/AddUserForm';
 import { profileUserService } from '../services';
-import { CreateProfileUserParams } from '../services/ProfileUserService';
-import { PerfilUsuario } from '../models/ProfileUser';
+import { CreateUserParams } from '../services/ProfileUserService';
+import { User } from '../models/User';
 import { useNavigation } from '@react-navigation/native';
 
 const UserView: React.FC = () => {
-  const [usuarios, setUsuarios] = useState<PerfilUsuario[]>([]);
-  const [selectedUsuario, setSelectedUsuario] = useState<PerfilUsuario>(null);
+  const [usuarios, setUsuarios] = useState<User[]>([]);
+  const [selectedUsuario, setSelectedUsuario] = useState<User>(null);
   const [isUsuarioSelected, setIsUsuarioSelected] = useState<boolean>(false);
 
   const navigation = useNavigation<any>();
@@ -35,12 +35,12 @@ const UserView: React.FC = () => {
 
   };
 
-  const handleAddUsuario = async (params: CreateProfileUserParams) => {
+  const handleAddUsuario = async (params: CreateUserParams) => {
     const newUser = await profileUserService.create(params);
     setUsuarios([...usuarios, newUser]);
   };
 
-  const handleSelectUsuario = (usuario: PerfilUsuario) => {  
+  const handleSelectUsuario = (usuario: User) => {  
     setSelectedUsuario(usuario);
     setIsUsuarioSelected(true);
   };

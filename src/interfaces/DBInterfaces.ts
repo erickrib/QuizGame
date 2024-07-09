@@ -7,8 +7,8 @@ import { CreateQuestionsGroupParams } from "../services/QuestionsGroupService";
 import { CreateAnswerParams } from "../services/QuestionAnswerService";
 import { QuestionStudent } from "../models/QuestionStudent";
 import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
-import { CreateProfileUserParams } from "../services/ProfileUserService";
-import { PerfilUsuario } from "../models/ProfileUser";
+import { CreateUserParams } from "../services/ProfileUserService";
+import { User } from "../models/User";
 
 export interface IQuestionsGroupRepository {
   createQuestionsGroup(params: CreateQuestionsGroupParams): Promise<QuestionsGroup>;
@@ -30,7 +30,9 @@ export interface IQuestionStudentRepository {
 }
 
 export interface IProfileUserRepository {
-  createProfileUser(params: CreateProfileUserParams): Promise<PerfilUsuario>;
-  fetchAllProfileUser(): Promise<PerfilUsuario[]>
+  createProfileUser(params: CreateUserParams): Promise<User>;
+  fetchAllUser(): Promise<User[]>
+  updateProfileUser(params: CreateUserParams): Promise<User>;
+  findProfileUserById(id: number): Promise<User | null>;
 }
 

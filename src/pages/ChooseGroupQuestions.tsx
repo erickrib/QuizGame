@@ -4,11 +4,12 @@ import CardGroupQuestions from '../components/CardGroupQuestions/CardGroupQuesti
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { questionsGroupService } from '../services';
 import { QuestionsGroup } from '../models/QuestionsGroup';
-import { PerfilUsuario } from '../models/ProfileUser';
+import { User } from '../models/User';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useAuth } from '../context/AuthContext';
 
 interface ChoseGroupQuestionsParams {
-    user: PerfilUsuario;
+    user: User;
 }
 
 const ChoseGroupQuestions: React.FC = () => {
@@ -17,7 +18,7 @@ const ChoseGroupQuestions: React.FC = () => {
     const navigation = useNavigation<any>();
 
     const route = useRoute();
-    const { user } = route.params as ChoseGroupQuestionsParams;
+    const { user } = useAuth();
 
     const handleNavigate = (group: QuestionsGroup) => {
         navigation.navigate('GameView', { group, user });
@@ -42,7 +43,7 @@ const ChoseGroupQuestions: React.FC = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.containerProfile}>
                 <MaterialIcons name='account-circle' size={40} color="orange" />
-                <Text style={styles.userName}>{user?.nome}</Text>
+                <Text style={styles.userName}>{user.nome}</Text>
             </View>
             <Text style={styles.title}>Escolha o grupo de perguntas</Text>
             <View style={styles.cardContainer}>

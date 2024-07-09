@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { PerfilUsuario } from '../../models/ProfileUser';
+import { User } from '../../models/User';
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface Props {
-    usuarios: PerfilUsuario[];
-    onSelectUsuario: (usuario: PerfilUsuario) => void;
-    selectedUser: PerfilUsuario | null;
+    usuarios: User[];
+    onSelectUsuario: (usuario: User) => void;
+    selectedUser: User | null;
 }
 
 const UserList: React.FC<Props> = ({ usuarios, onSelectUsuario, selectedUser }) => {
 
-    const handleSelectUsuario = (usuario: PerfilUsuario) => {
+    const handleSelectUsuario = (usuario: User) => {
         onSelectUsuario(usuario);
     }
 

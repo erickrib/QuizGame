@@ -8,8 +8,8 @@ import { IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerReposito
 import { conn } from "./db";
 import { CreateAnswerParams } from "../services/QuestionAnswerService";
 import { QuestionAnswer } from "../models/QuestionAnswer";
-import { PerfilUsuario } from "../models/ProfileUser";
-import { CreateProfileUserParams } from "../services/ProfileUserService";
+import { User } from "../models/User";
+import { CreateUserParams } from "../services/ProfileUserService";
 import { QuestionStudent } from "../models/QuestionStudent";
 import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
 
@@ -94,10 +94,15 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   }
   
   // Funções de Usuário 
-  async createProfileUser(params: CreateProfileUserParams): Promise<PerfilUsuario> {
+  async createProfileUser(params: CreateUserParams): Promise<User> {
     return await this.conn.transaction(async (trans) => {
-      const perfilUsuario = new PerfilUsuario();
+      const perfilUsuario = new User();
+      perfilUsuario.id = params.id;
       perfilUsuario.nome = params.nome;
+      perfilUsuario.email = params.email;
+      perfilUsuario.profileId = params.profileId;
+      perfilUsuario.companyId = params.companyId;
+      perfilUsuario.accountActive = params.accountActive;
 
       await trans.save(perfilUsuario);
 
@@ -105,8 +110,32 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     });
   }
 
-  async fetchAllProfileUser(): Promise<PerfilUsuario[]> {
-    return await this.conn.manager.find(PerfilUsuario);
+  async fetchAllUser(): Promise<User[]> {
+    return await this.conn.manager.find(User);
+  }
+
+  async updateProfileUser(params: CreateUserParams): Promise<User> {
+    return await this.conn.transaction(async (trans) => {
+      try {
+        const existingUser = await trans.findOneOrFail(User, { where: { id: params.id } });
+        existingUser.id = params.id;
+        existingUser.nome = params.nome;
+        existingUser.email = params.email;
+        existingUser.profileId = params.profileId;
+        existingUser.companyId = params.companyId;
+        existingUser.accountActive = params.accountActive;
+  
+        const updatedUser = await trans.save(existingUser);
+        return updatedUser;
+      } catch (error) {
+        console.error('Erro ao atualizar perfil de usuário:', error);
+        throw new Error('Erro ao atualizar perfil de usuário');
+      }
+    });
+  }
+
+  async findProfileUserById(userId: number): Promise<User | undefined> {
+    return await this.conn.manager.findOne(User, { where: { id: userId } });
   }
   
   async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
@@ -115,7 +144,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         console.log('Iniciando transação para criar QuestionStudent');
 
         // Encontre o perfil de usuário associado
-        const perfilUsuario = await trans.findOneOrFail(PerfilUsuario, { where: { id: params.id_perfil_usuario } });
+        const perfilUsuario = await trans.findOneOrFail(User, { where: { id: params.id_perfil_usuario } });
         console.log('PerfilUsuario encontrado:', perfilUsuario);
 
         // Encontra a questão associada
@@ -180,7 +209,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
       await trans.delete(QuestionsGroup, {});
 
-      await trans.delete(PerfilUsuario, {});
+      await trans.delete(User, {});
   });
 
     console.warn('Banco de dados limpo!');

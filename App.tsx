@@ -8,11 +8,13 @@ import GameView from './src/pages/GameView';
 import { useDatabaseInitialize } from './src/hooks/use-database-initialize';
 
 import DATA from './src/database/questions.json';
-import { questionsGroupService } from './src/services';
+import { profileUserService, questionsGroupService } from './src/services';
 import { useEffect } from 'react';
 import { CreateQuestionsGroupParams } from './src/services/QuestionsGroupService';
 import UserView from './src/pages/UserView';
 import { questionsService } from './src/services';
+import LoginView from './src/pages/LoginView';
+import { AuthProvider } from './src/context/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,12 +77,27 @@ export default function App() {
       }
     };
 
-   fetchData();
+  fetchData();
 
   // questionsService.clearDatabase()
   }, [ready]);
 
+  useEffect(() => { 
+      if (ready) {
+        const fetchUsuarios = async () => {
+        try {
+          const users = await profileUserService.fetchAll();
+          console.error('Usuários:', users.map(user => user.nome));
+        } catch (error) {
+          console.error('Erro ao buscar usuários:', error);
+        }
+      };
+      fetchUsuarios();
+    }
+    }, [ready]);
+
   return (
+    <AuthProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
@@ -93,8 +110,8 @@ export default function App() {
           component={ChoseGroupQuestions} />
         <Stack.Screen
           name='UserView'
-          options={{ title: 'Cadastro' }}
-          component={UserView} 
+          options={{ title: 'Login' }}
+          component={LoginView} 
         />
         <Stack.Screen
           name="GameView"
@@ -102,6 +119,7 @@ export default function App() {
           component={GameView} />
       </Stack.Navigator>
     </NavigationContainer>
+    </AuthProvider>
   );
 }
 

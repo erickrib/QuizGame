@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, TextInput, View, StyleSheet, Pressable, Text } from 'react-native';
-import { CreateProfileUserParams } from '../../services/ProfileUserService';
+import { CreateUserParams } from '../../services/ProfileUserService';
 
 interface Props {
-  onAddUsuario: (params: CreateProfileUserParams) => void;
+  onAddUsuario: (params: CreateUserParams) => void;
 }
 
 const AddUserForm: React.FC<Props> = ({ onAddUsuario }) => {
@@ -11,7 +11,7 @@ const AddUserForm: React.FC<Props> = ({ onAddUsuario }) => {
 
   const handleAddUsuario = () => {
     if (nome.trim() !== '') {
-      onAddUsuario({ nome });
+      // onAddUsuario({ nome });
       setNome('');
     }
   };

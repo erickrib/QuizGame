@@ -1,9 +1,13 @@
 import { IProfileUserRepository } from "../interfaces/DBInterfaces";
-import { PerfilUsuario } from "../models/ProfileUser";
+import { User } from "../models/User";
 
-
-export interface CreateProfileUserParams {
+export interface CreateUserParams {
+  id: number;
   nome: string;
+  email: string;
+  profileId: string;
+  companyId: string;
+  accountActive: string;
 }
 
 export class ProfileUserService {
@@ -13,11 +17,20 @@ export class ProfileUserService {
     this.repository = repository;
   }
 
-  async create(params: CreateProfileUserParams): Promise<PerfilUsuario> {
+  async create(params: CreateUserParams): Promise<User> {
     return await this.repository.createProfileUser(params);
   }
 
-  async fetchAll(): Promise<PerfilUsuario[]> {
-    return await this.repository.fetchAllProfileUser();
+  async fetchAll(): Promise<User[]> {
+    return await this.repository.fetchAllUser();
+  }
+
+  async findById(id: number): Promise<User | null> {
+    return await this.repository.findProfileUserById(id);
+  }
+
+  async update(params: CreateUserParams): Promise<User> {
+    return await this.repository.updateProfileUser(params);
   }
 }
+

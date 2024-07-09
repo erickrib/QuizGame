@@ -1,8 +1,8 @@
 import { QuestionsGroup } from "./QuestionsGroup";
 import { Question } from "./Question";
 import { QuestionAnswer } from "./QuestionAnswer";
-import { PerfilUsuario } from "./ProfileUser";
+import { User } from "./User";
 import { QuestionStudent } from "./QuestionStudent";
 
 
-export const entities = [QuestionsGroup, Question, QuestionAnswer, PerfilUsuario, QuestionStudent];
+export const entities = [QuestionsGroup, Question, QuestionAnswer, User, QuestionStudent];
