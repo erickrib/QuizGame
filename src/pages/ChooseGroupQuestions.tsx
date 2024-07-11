@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, ActivityIndicator } from "react-native";
 import CardGroupQuestions from '../components/CardGroupQuestions/CardGroupQuestions';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { questionsGroupService } from '../services';
 import { QuestionsGroup } from '../models/QuestionsGroup';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { useSync } from '../context/SyncContext';
 
 const ChoseGroupQuestions: React.FC = () => {
 
@@ -13,6 +14,7 @@ const ChoseGroupQuestions: React.FC = () => {
     const navigation = useNavigation<any>();
 
     const { user } = useAuth();
+    const { isSyncing } = useSync();
 
     const handleNavigate = (group: QuestionsGroup) => {
         navigation.navigate('GameView', { group });
@@ -22,8 +24,10 @@ const ChoseGroupQuestions: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                const groups = await questionsGroupService.fetchAll();
-                setGroups(groups);
+                if (!isSyncing) {
+                    const groups = await questionsGroupService.fetchAll();
+                    setGroups(groups);
+                }
 
             } catch (error) {
                 console.error('Erro ao buscar grupos de perguntas:', error);
@@ -31,7 +35,17 @@ const ChoseGroupQuestions: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+
+    }, [isSyncing]);
+
+    if (isSyncing) {
+        return (
+            <SafeAreaView style={styles.loadingContainer}>
+                <Text>Sincronizando..</Text>
+                <ActivityIndicator size="large" color="blue" />
+            </SafeAreaView>
+        );
+    }
 
     return (
         <SafeAreaView>
@@ -43,11 +57,11 @@ const ChoseGroupQuestions: React.FC = () => {
                     </View>
                     <Text style={styles.title}>Escolha o grupo de perguntas</Text>
                     <View style={styles.cardContainer}>
-                    <View  style={styles.cardRow}>
-                        {groups.map((group) => (
+                        <View style={styles.cardRow}>
+                            {groups.map((group) => (
                                 <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
-                           
-                        ))}
+
+                            ))}
                         </View>
                     </View>
                 </View>
@@ -57,6 +71,12 @@ const ChoseGroupQuestions: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         alignItems: 'center',

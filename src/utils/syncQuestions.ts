@@ -18,14 +18,12 @@ interface Activity {
     respostaCorreta: string;
 }
 
-export const transformActivities = async (
+export const syncQuestions = async (
     activities: Activity[],
 ) => {
     const localQuestions = await questionsService.fetchAll(); 
     const localQuestionIds = localQuestions.map(question => question.id);
-
-    console.log('localQuestions', localQuestions);
-
+    
     const serverQuestionIds = activities.map(activity => activity.id);
 
     const questionsToAdd = activities.filter(activity => !localQuestionIds.includes(activity.id));
@@ -118,5 +116,4 @@ export const transformActivities = async (
 
         await questionsGroupService.update(groupParams);
     }
-
 };

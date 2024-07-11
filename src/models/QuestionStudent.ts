@@ -16,6 +16,9 @@ export class QuestionStudent {
     @Column({ name: 'tempo_execucao', type: 'varchar', nullable: true })
     tempo_execucao?: number;
 
+    @Column({ name: 'is_pending_sync', type: 'boolean', default: true })
+    isPendingSync: boolean;
+
     @
     ManyToOne(() => User, user => user.questoes_realizadas, { cascade: true })
     perfilUsuario!: User;

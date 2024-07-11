@@ -2,6 +2,7 @@ import { Question } from "../models/Question";
 import { QuestionsGroup } from "../models/QuestionsGroup";
 import { IQuestionRepository } from "../interfaces/DBInterfaces";
 import { CreateAnswerParams } from "./QuestionAnswerService";
+import { QuestionStudent } from "../models/QuestionStudent";
 
 export type CreateQuestionParams = {
   id: number;

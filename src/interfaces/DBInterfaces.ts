@@ -30,6 +30,8 @@ export interface IQuestionAnswerRepository {
 export interface IQuestionStudentRepository {
   createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent>;
   fetchAllQuestionStudent(): Promise<QuestionStudent[]>;
+  findPendingSyncAnswers(): Promise<QuestionStudent[]>;
+  markAsSynced(questionsStudent: QuestionStudent[]): Promise<void>;
 }
 
 export interface IProfileUserRepository {

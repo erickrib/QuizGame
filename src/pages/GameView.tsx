@@ -13,6 +13,8 @@ import { Question } from '../models/Question';
 import { questionStudentService } from '../services';
 import { User } from '../models/User';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../api/api';
+import { useSync } from '../context/SyncContext';
 
 interface GameViewParams {
     group: QuestionsGroup;
@@ -55,8 +57,9 @@ const GameView: React.FC = () => {
 
     const navigation = useNavigation<any>();
     const route = useRoute();
-    const { user } = useAuth();
+    const { user, token } = useAuth();
     const { group } = route.params as GameViewParams;
+    const { syncPendingAnswersUser } = useSync();
 
     const currentQuestion: Question = group.questions[currentQuestionIndex];
     const currentAnswer: QuestionAnswer = answers[0];
@@ -120,7 +123,7 @@ const GameView: React.FC = () => {
         }));
     };
 
-    // Registra a resposta do aluno
+    // Registra a resposta
     const logResponse = async (status: string) => {
         const statusResposta = status;
         await questionStudentService.create({
@@ -129,7 +132,11 @@ const GameView: React.FC = () => {
             status_resposta: statusResposta,
             codigo_atividade: currentQuestion.codigo,
             tempo_execucao: 0,
+            is_pending_sync: true,
         });
+
+        // Sincroniza as respostas pendentes
+        await syncPendingAnswersUser();
     };
 
     // Função para selecionar a próxima pergunta

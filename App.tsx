@@ -53,8 +53,8 @@ export default function App() {
         }
       }
 
-   // cleardata();
-    fetchQuestions();
+   cleardata();
+   // fetchQuestions();
     }
   }, [ready]);
 

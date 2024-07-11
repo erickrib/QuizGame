@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { api } from '../api/api';
-import { transformActivities } from '../utils/transformQuestions';
+import { syncQuestions } from '../utils/syncQuestions';
+import { syncPendingAnswers } from '../utils/syncPendingAnswers';
 
 interface SyncContextData {
   syncData: () => Promise<void>;
+  syncTransformedQuestions: () => Promise<void>;
+  syncPendingAnswersUser: () => Promise<void>;
   isSyncing: boolean;
 }
 
@@ -23,15 +26,8 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const syncData = async () => {
     setIsSyncing(true);
     try {
-      const activitiesList =  await api.get(`/atividade/findbyusuario/${user.id}`,  {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }); 
-
-      if (activitiesList.data.listaAtividades) {
-        await transformActivities(activitiesList.data.listaAtividades);
-      }  
+      await syncTransformedQuestions();
+      await syncPendingAnswersUser();
 
     } catch (error) {
       console.error('Erro ao sincronizar dados:', error);
@@ -40,11 +36,38 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const syncTransformedQuestions = async () => {
+    try {
+      const activitiesList =  await api.get(`/atividade/findbyusuario/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }); 
+
+      if (activitiesList.data.listaAtividades) {
+        await syncQuestions(activitiesList.data.listaAtividades);
+      }
+    } catch (error) {
+      console.error('Erro ao sincronizar questões:', error);
+      throw error; 
+    }
+  };
+
+  const syncPendingAnswersUser = async () => {
+    try {
+      await syncPendingAnswers(token);
+    } catch (error) {
+      console.error('Erro ao sincronizar respostas pendentes:', error);
+      throw error; 
+    }
+  };
+
   return (
-    <SyncContext.Provider value={{ syncData, isSyncing }}>
+    <SyncContext.Provider value={{ syncData, syncTransformedQuestions, syncPendingAnswersUser, isSyncing }}>
       {children}
     </SyncContext.Provider>
   );
 };
 
 export const useSync = () => useContext(SyncContext);
+

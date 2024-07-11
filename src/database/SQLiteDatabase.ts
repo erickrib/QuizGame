@@ -278,6 +278,10 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         questionStudent.perfilUsuario = perfilUsuario;
         questionStudent.questao = question;
         questionStudent.statusResposta = params.status_resposta;
+        questionStudent.codigoAtividade = params.codigo_atividade;
+        questionStudent.tempo_execucao = params.tempo_execucao;
+        questionStudent.isPendingSync = params.is_pending_sync;
+
         console.warn('QuestionStudent criado:', questionStudent);
 
         const savedQuestionStudent = await trans.save(questionStudent);
@@ -313,6 +317,30 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     });
   }
 
+  async findPendingSyncAnswers(): Promise<QuestionStudent[]> {
+    return await conn.manager.find(QuestionStudent, {
+      where: {
+          isPendingSync: true,
+      },
+      relations: ['perfilUsuario', 'questao'] 
+  });
+  }
+
+  async markAsSynced(questionStudents: QuestionStudent[]): Promise<void> {
+    await this.conn.transaction(async (transManager) => {
+      try {
+        for (const student of questionStudents) {
+          const existingStudent = await transManager.findOneOrFail(QuestionStudent, { where: { id: student.id } });
+          existingStudent.isPendingSync = false;
+          await transManager.save(existingStudent);
+        }
+      } catch (error) {
+        console.error('Erro ao marcar como sincronizado:', error);
+        throw new Error('Erro ao marcar como sincronizado');
+      }
+    });
+  }
+  
   async findByQuestionId(questionId: number): Promise<QuestionAnswer[]> {
     return await this.conn.manager.find(QuestionAnswer, {
       where: {
