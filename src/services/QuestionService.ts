@@ -9,6 +9,9 @@ export type CreateQuestionParams = {
   descricao: string;
   grupo_id: number;
   resposta: CreateAnswerParams;
+  codigo: string;
+  idioma: string;
+  tipo: string;
 };
 
 export class QuestionsService {

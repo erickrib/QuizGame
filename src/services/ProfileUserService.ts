@@ -8,6 +8,8 @@ export interface CreateUserParams {
   profileId: string;
   companyId: string;
   accountActive: string;
+  isLoggedIn: boolean;
+  token?: string;
 }
 
 export class ProfileUserService {
@@ -31,6 +33,10 @@ export class ProfileUserService {
 
   async update(params: CreateUserParams): Promise<User> {
     return await this.repository.updateProfileUser(params);
+  }
+
+  async updateLoggedInStatus(id: number, status: boolean): Promise<User> {
+    return await this.repository.updateLoggedInStatus(id, status);
   }
 }
 

@@ -1,13 +1,21 @@
 import { Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import QuizButton from '../components/QuizButton/QuizButton';
+import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 const HomeView: React.FC = () => {
     const navi = useNavigation<any>();
+    
+    const { user } = useAuth();
 
     const handleStartQuiz = () => {
-        navi.navigate("UserView");
+        navi.navigate(user?.id ? "ChoseGroupQuestions" : "UserView");
     };
+
+    useEffect(() => {
+        console.error('Usuário:', user);
+    }, [user]);
 
     return (
         <SafeAreaView style={styles.container}>

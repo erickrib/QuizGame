@@ -5,8 +5,8 @@ export interface CreateQuestionStudentParams {
     id_perfil_usuario: number;
     id_atividade: number;
     status_resposta?: string;
-    active?: boolean;
-    codigoAtividade?: string;
+    codigo_atividade?: string;
+    tempo_execucao?: number;
   }
 
   export class QuestionStudentService {

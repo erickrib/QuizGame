@@ -21,6 +21,12 @@ export class User {
   @Column({ name: 'accountActive', type: 'varchar' })
   accountActive!: string;
 
+  @Column({ name: 'isLoggedIn', type: 'boolean', default: false })
+  isLoggedIn!: boolean;
+
+  @Column({ name: 'token', type: 'varchar', nullable: true })
+  token?: string;
+
   @OneToMany(() => QuestionStudent, questionStudent => questionStudent.perfilUsuario)
   questoes_realizadas!: QuestionStudent[];
 }

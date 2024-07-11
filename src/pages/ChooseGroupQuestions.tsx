@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import CardGroupQuestions from '../components/CardGroupQuestions/CardGroupQuestions';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { questionsGroupService } from '../services';
 import { QuestionsGroup } from '../models/QuestionsGroup';
-import { User } from '../models/User';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
-
-interface ChoseGroupQuestionsParams {
-    user: User;
-}
 
 const ChoseGroupQuestions: React.FC = () => {
 
     const [groups, setGroups] = useState<QuestionsGroup[]>([]);
     const navigation = useNavigation<any>();
 
-    const route = useRoute();
     const { user } = useAuth();
 
     const handleNavigate = (group: QuestionsGroup) => {
-        navigation.navigate('GameView', { group, user });
+        navigation.navigate('GameView', { group });
     }
 
     useEffect(() => {
-        console.log('user:', user);
-        
+
         const fetchData = async () => {
             try {
-                const groups = await questionsGroupService.fetchAll();             
+                const groups = await questionsGroupService.fetchAll();
                 setGroups(groups);
+
             } catch (error) {
                 console.error('Erro ao buscar grupos de perguntas:', error);
             }
@@ -40,19 +34,24 @@ const ChoseGroupQuestions: React.FC = () => {
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.containerProfile}>
-                <MaterialIcons name='account-circle' size={40} color="orange" />
-                <Text style={styles.userName}>{user.nome}</Text>
-            </View>
-            <Text style={styles.title}>Escolha o grupo de perguntas</Text>
-            <View style={styles.cardContainer}>
-                {groups.map((group) => (
-                    <View key={group.id} style={styles.cardRow}>
-                        <CardGroupQuestions onPress={() => handleNavigate(group)} text={group.nome} />
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.containerProfile}>
+                        <MaterialIcons name='account-circle' size={40} color="orange" />
+                        <Text style={styles.userName}>{user?.nome}</Text>
                     </View>
-                ))}
-            </View>
+                    <Text style={styles.title}>Escolha o grupo de perguntas</Text>
+                    <View style={styles.cardContainer}>
+                    <View  style={styles.cardRow}>
+                        {groups.map((group) => (
+                                <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
+                           
+                        ))}
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -82,13 +81,14 @@ const styles = StyleSheet.create({
     cardContainer: {
         flex: 1,
         width: '100%',
-        marginTop: 40,
+        marginTop: 10,
     },
     cardRow: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 20,
-        gap: 10,
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        marginHorizontal: 5,
+        gap: 5,
     },
     userName: {
         fontSize: 24,

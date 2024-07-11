@@ -37,6 +37,9 @@ export const transformActivities = async (
             return  activity.produtoId !== localQuestion.grupo.id ||
             activity.nome !== localQuestion.nome ||
             activity.descricao !== localQuestion.descricao ||
+            activity.idioma !== localQuestion.idioma ||
+            activity.codigoAtividade !== localQuestion.codigo ||
+            activity.tipoAtividade !== localQuestion.tipo ||
             (activity.resposta1 !== null && activity.resposta1 !== localQuestion.resposta.resposta_1) ||
             (activity.resposta2 !== null && activity.resposta2 !== localQuestion.resposta.resposta_2) ||
             (activity.resposta3 !== null && activity.resposta3 !== localQuestion.resposta.resposta_3) ||
@@ -71,6 +74,9 @@ export const transformActivities = async (
                 nome: activity.nome,
                 descricao: activity.descricao,
                 grupo_id: activity.produtoId,
+                idioma: activity.idioma,
+                codigo: activity.codigoAtividade,
+                tipo: activity.tipoAtividade,
                 resposta: {
                     resposta_1: activity.resposta1,
                     resposta_2: activity.resposta2,
@@ -96,6 +102,9 @@ export const transformActivities = async (
                     nome: activity.nome,
                     descricao: activity.descricao,
                     grupo_id: activity.produtoId,
+                    idioma: activity.idioma,
+                    codigo: activity.codigoAtividade,
+                    tipo: activity.tipoAtividade,
                     resposta: {
                         resposta_1: activity.resposta1,
                         resposta_2: activity.resposta2,

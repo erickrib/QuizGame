@@ -4,6 +4,7 @@ import  { jwtDecode } from 'jwt-decode';
 import { api } from '../api/api';
 import { profileUserService } from '../services';
 import { CreateUserParams } from '../services/ProfileUserService';
+import { useDatabaseInitialize } from '../hooks/use-database-initialize';
 
 interface User {
   id: string;
@@ -36,9 +37,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await api.post('/login', { email, password });
       const { user: userData, token } = response.data as { user: User, token: string };
+
       setToken(token);
 
-      await AsyncStorage.setItem('userToken', token);
       await updateLocalUser(userData);
 
       setError(null);
@@ -57,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(null);
     setError(null);
     await AsyncStorage.removeItem('userToken');
+    await profileUserService.updateLoggedInStatus(user?.id, false);
   };
 
   const updateLocalUser = async (userData: User) => {
@@ -71,6 +73,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         profileId: userData.profileId,
         companyId: userData.companyId,
         accountActive: userData.accountActive,
+        isLoggedIn: true,
+        token: token,
       });
 
       setUser(userSqlite);
@@ -84,6 +88,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         profileId: userData.profileId,
         companyId: userData.companyId,
         accountActive: userData.accountActive,
+        isLoggedIn: true,
+        token: token,
       });
 
       setUser(userSqlite);
@@ -91,27 +97,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    const loadStoredToken = async () => {
+    const loadStoredUser = async () => {
       try {
-        const storedToken = await AsyncStorage.getItem('userToken');
-        if (storedToken) {
-          const decodedToken = jwtDecode(storedToken);
+        const storedUser = await profileUserService.fetchAll()[0];
+        if (storedUser && storedUser.token) {
+          const decodedToken = jwtDecode(storedUser.token) as { exp: number };
           const currentTime = Date.now() / 1000;
           if (decodedToken.exp < currentTime) {
-            await AsyncStorage.removeItem('userToken');
-            signOut();  
+            await profileUserService.updateLoggedInStatus(storedUser.id.toString(), false);
+            signOut();
           } else {
-            setToken(storedToken);
+            setUser(storedUser);
+            setToken(storedUser.token);
           }
         }
+
       } catch (err) {
-        console.error('Falha ao carregar token do AsyncStorage:', err);
+        console.error('Falha ao carregar usuário do banco de dados local:', err);
       } finally {
         setLoading(false);
       }
-    };
+    };    
 
-    loadStoredToken();
+    loadStoredUser();
   }, []);
 
   return (

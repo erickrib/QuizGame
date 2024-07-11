@@ -10,14 +10,11 @@ export class QuestionStudent {
     @Column({ name: 'status_resposta', type: 'varchar', nullable: true })
     statusResposta?: string;
 
-    @Column({ name: 'active', type: 'boolean', default: true })
-    active!: boolean;
-
     @Column({ name: 'codigo_atividade', type: 'varchar', nullable: true })
     codigoAtividade?: string;
 
-    @Column({ name: 'data_resposta', type: 'text', nullable: true })
-    dataResposta: string;
+    @Column({ name: 'tempo_execucao', type: 'varchar', nullable: true })
+    tempo_execucao?: number;
 
     @
     ManyToOne(() => User, user => user.questoes_realizadas, { cascade: true })

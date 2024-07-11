@@ -62,12 +62,15 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   
   // Funções de Criação de Perguntas
   private async createQuestions(trans: EntityManager, questions: CreateQuestionsGroupParams['questions'], groupDB: QuestionsGroup): Promise<Question[]> {
-    const questionsPromises = questions.map(async ({ id, nome, descricao, resposta }) => {
+    const questionsPromises = questions.map(async ({ id, nome, descricao, resposta, idioma, codigo, tipo }) => {
       const question = new Question();
       question.id = id
       question.nome = nome;
       question.descricao = descricao;
       question.grupo = groupDB;
+      question.idioma = idioma;
+      question.codigo = codigo;
+      question.tipo = tipo;
   
       const questionDB = await trans.save(question);
   
@@ -182,6 +185,8 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       perfilUsuario.profileId = params.profileId;
       perfilUsuario.companyId = params.companyId;
       perfilUsuario.accountActive = params.accountActive;
+      perfilUsuario.isLoggedIn = true;
+      perfilUsuario.token = params.token
 
       await trans.save(perfilUsuario);
 
@@ -208,6 +213,27 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       } catch (error) {
         console.error('Erro ao atualizar perfil de usuário:', error);
         throw new Error('Erro ao atualizar perfil de usuário');
+      }
+    });
+  }
+
+  async updateLoggedInStatus(id: number, status: boolean): Promise<User> {
+    return await this.conn.transaction(async (transManager: EntityManager) => {
+      try {
+        const existingUser = await transManager.findOne(User, { where: { id } });
+
+        if (!existingUser) {
+          throw new Error(`Usuário com ID ${id} não encontrado.`);
+        }
+
+        existingUser.isLoggedIn = status;
+
+        await transManager.save(existingUser);
+
+        return existingUser;
+        
+      } catch (error) {
+        throw new Error(`Falha ao atualizar o estado de isLoggedIn para o usuário com ID ${id}: ${error.message}`);
       }
     });
   }
@@ -252,12 +278,9 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         questionStudent.perfilUsuario = perfilUsuario;
         questionStudent.questao = question;
         questionStudent.statusResposta = params.status_resposta;
-        questionStudent.dataResposta = new Date().toISOString();
-        console.log('QuestionStudent criado:', questionStudent);
+        console.warn('QuestionStudent criado:', questionStudent);
 
         const savedQuestionStudent = await trans.save(questionStudent);
-        console.log('QuestionStudent salvo:', savedQuestionStudent);
-
         return savedQuestionStudent;
       } catch (error) {
         console.error('Erro ao criar QuestionStudent:', error);

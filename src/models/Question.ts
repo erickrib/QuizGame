@@ -20,6 +20,15 @@ import { QuestionStudent } from "./QuestionStudent";
   
     @Column({ name: "descricao", type: "varchar" })
     descricao!: string;
+
+    @Column({ name: "codigo", type: "varchar" })
+    codigo!: string;
+
+    @Column({ name: "idioma", type: "varchar", nullable: true })
+    idioma!: string;
+
+    @Column({ name: "tipo", type: "varchar" })
+    tipo!: string;
   
     @ManyToOne(() => QuestionsGroup, group => group.questions)
     grupo!: QuestionsGroup;

@@ -37,5 +37,6 @@ export interface IProfileUserRepository {
   fetchAllUser(): Promise<User[]>
   updateProfileUser(params: CreateUserParams): Promise<User>;
   findProfileUserById(id: number): Promise<User | null>;
+  updateLoggedInStatus(id: number, status: boolean): Promise<User>;
 }
 

@@ -54,7 +54,7 @@ export default function App() {
       }
 
    // cleardata();
-      fetchQuestions();
+    fetchQuestions();
     }
   }, [ready]);
 
