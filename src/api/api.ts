@@ -1,5 +1,7 @@
 import axios from 'axios';
 
-export const loginApi = axios.create({
+export const api = axios.create({
   baseURL: 'https://apimmpapp-dev.t-upsolucoes.com.br',
 });
+
+

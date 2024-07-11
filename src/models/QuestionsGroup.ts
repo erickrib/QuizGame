@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Relation } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn, Relation } from "typeorm";
 import { Question } from "./Question";
 
 @Entity("questions_group")
 export class QuestionsGroup {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'int' })
   id: number;
 
   @Column({ name: "nome", type: "varchar" })

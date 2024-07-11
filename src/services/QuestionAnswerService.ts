@@ -2,12 +2,12 @@ import { IQuestionAnswerRepository } from "../interfaces/DBInterfaces";
 import { QuestionAnswer } from "../models/QuestionAnswer";
 
 export interface CreateAnswerParams {
+  id?: number;
   resposta_1?: string;
   resposta_2?: string;
   resposta_3?: string;
   resposta_4?: string;
   resposta_correta?: string;
-  active: boolean;
 }
 
 export class QuestionAnswerService {
@@ -20,5 +20,6 @@ export class QuestionAnswerService {
   async findAnswersByQuestion(questionId: number): Promise<QuestionAnswer[]> {
     return await this.repository.findByQuestionId(questionId);
   }
+
 }
 

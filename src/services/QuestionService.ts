@@ -1,12 +1,14 @@
 import { Question } from "../models/Question";
 import { QuestionsGroup } from "../models/QuestionsGroup";
 import { IQuestionRepository } from "../interfaces/DBInterfaces";
+import { CreateAnswerParams } from "./QuestionAnswerService";
 
 export type CreateQuestionParams = {
+  id: number;
   nome: string;
   descricao: string;
   grupo_id: number;
-  resposta: {};
+  resposta: CreateAnswerParams;
 };
 
 export class QuestionsService {
@@ -22,5 +24,13 @@ export class QuestionsService {
 
   async findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]> {
     return await this.repository.findByQuestionsGroup(grupo);
+  }
+
+  async fetchAll(): Promise<Question[]> {  
+    return await this.repository.fetchAllQuestions();
+  }
+
+  async delete(id: number): Promise<void> {
+    return await this.repository.deleteQuestionById(id);
   }
 }

@@ -1,13 +1,11 @@
 import { QuestionsGroup } from "../models/QuestionsGroup";
 import { IQuestionsGroupRepository } from "../interfaces/DBInterfaces";
-import { CreateAnswerParams } from "./QuestionAnswerService";
+import { CreateQuestionParams } from "./QuestionService";
 
 export interface CreateQuestionsGroupParams extends Pick<QuestionsGroup, "nome"> {
-  questions?: {
-    nome: string;
-    descricao: string;
-    resposta?: CreateAnswerParams;
-  }[];
+  id: number;
+  nome: string;
+  questions?: CreateQuestionParams[];
 }
 
 export class QuestionsGroupService {
@@ -23,6 +21,10 @@ export class QuestionsGroupService {
 
   async fetchAll(): Promise<QuestionsGroup[]> {
     return await this.repository.fetchAllQuestionsGroups();
+  }
+
+  async update(params: CreateQuestionsGroupParams): Promise<QuestionsGroup> {
+    return await this.repository.updateQuestionsGroup(params);
   }
 
 }

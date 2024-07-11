@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import  { jwtDecode } from 'jwt-decode';
-import { loginApi } from '../api/api';
+import { api } from '../api/api';
 import { profileUserService } from '../services';
 import { CreateUserParams } from '../services/ProfileUserService';
 
@@ -31,34 +31,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadStoredToken = async () => {
-      try {
-        const storedToken = await AsyncStorage.getItem('userToken');
-        if (storedToken) {
-          const decodedToken = jwtDecode(storedToken);
-          const currentTime = Date.now() / 1000;
-          if (decodedToken.exp < currentTime) {
-            await AsyncStorage.removeItem('userToken');
-            signOut();  
-          } else {
-            setToken(storedToken);
-          }
-        }
-      } catch (err) {
-        console.error('Falha ao carregar token do AsyncStorage:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadStoredToken();
-  }, []);
-
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const response = await loginApi.post('/login', { email, password });
+      const response = await api.post('/login', { email, password });
       const { user: userData, token } = response.data as { user: User, token: string };
       setToken(token);
 
@@ -113,6 +89,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(userSqlite);
     }
   };
+
+  useEffect(() => {
+    const loadStoredToken = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('userToken');
+        if (storedToken) {
+          const decodedToken = jwtDecode(storedToken);
+          const currentTime = Date.now() / 1000;
+          if (decodedToken.exp < currentTime) {
+            await AsyncStorage.removeItem('userToken');
+            signOut();  
+          } else {
+            setToken(storedToken);
+          }
+        }
+      } catch (err) {
+        console.error('Falha ao carregar token do AsyncStorage:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStoredToken();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, token, loading, error, signIn, signOut }}>

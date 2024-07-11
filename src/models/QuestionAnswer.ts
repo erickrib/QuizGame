@@ -3,28 +3,26 @@ import { Question } from "./Question";
 
 @Entity("question_answer")
 export class QuestionAnswer {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn({ type: 'int' })
   id!: number;
 
-  @Column({ name: "resposta_1", type: "varchar" })
-  resposta_1!: string;
+  @Column({ name: "resposta_1", type: "varchar", nullable: true })
+  resposta_1!: string | null;
 
-  @Column({ name: "resposta_2", type: "varchar" })
-  resposta_2!: string;
+  @Column({ name: "resposta_2", type: "varchar", nullable: true }) 
+  resposta_2!: string | null;
 
-  @Column({ name: "resposta_3", type: "varchar" })
-  resposta_3!: string;
+  @Column({ name: "resposta_3", type: "varchar", nullable: true }) 
+  resposta_3!: string | null;
 
-  @Column({ name: "resposta_4", type: "varchar" })
-  resposta_4!: string;
+  @Column({ name: "resposta_4", type: "varchar", nullable: true }) 
+  resposta_4!: string | null;
 
   @Column({ name: "resposta_correta", type: "varchar" })
   resposta_correta!: string;
-
-  @Column({ type: 'boolean', nullable: true }) 
-    active: boolean;
 
   @OneToOne(() => Question, question => question.resposta)
   @JoinColumn()
   questao!: Relation<Question>;
 }
+

@@ -13,11 +13,14 @@ import { User } from "../models/User";
 export interface IQuestionsGroupRepository {
   createQuestionsGroup(params: CreateQuestionsGroupParams): Promise<QuestionsGroup>;
   fetchAllQuestionsGroups(): Promise<QuestionsGroup[]>;
+  updateQuestionsGroup(params: CreateQuestionsGroupParams): Promise<QuestionsGroup>;
 }
 
 export interface IQuestionRepository {
   clearDatabase(): Promise<void>;
   findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]>;
+  fetchAllQuestions(): Promise<Question[]>;
+  deleteQuestionById(id: number): Promise<void>;
 }
 
 export interface IQuestionAnswerRepository {

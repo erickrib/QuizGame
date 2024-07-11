@@ -3,7 +3,7 @@ import {
     Entity,
     ManyToOne,
     OneToOne,
-    PrimaryGeneratedColumn,
+    PrimaryColumn,
     Relation,
   } from "typeorm";
   import { QuestionsGroup } from "./QuestionsGroup";
@@ -12,7 +12,7 @@ import { QuestionStudent } from "./QuestionStudent";
   
   @Entity("question")
   export class Question {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn({ type: 'int' })
     id!: number;
   
     @Column({ name: "nome", type: "varchar" })
