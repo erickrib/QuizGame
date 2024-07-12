@@ -28,19 +28,21 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [user, token]);
 
   useEffect(() => {
-    if (!isConnected) {
+    if (isConnected) {
       syncData();
     }
   }, [isConnected]);
 
   const syncData = async () => {
     setIsSyncing(true);
+
     try {
       await syncTransformedQuestions();
       await syncPendingAnswersUser();
 
     } catch (error) {
       console.error('Erro ao sincronizar dados:', error);
+      setIsSyncEnabled(false);
     } finally {
       setIsSyncing(false);
     }
@@ -59,7 +61,6 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error('Erro ao sincronizar questões:', error);
-      setIsSyncEnabled(false);
     }
   };
 
@@ -68,7 +69,6 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await syncPendingAnswers(token);
     } catch (error) {
       console.error('Erro ao sincronizar respostas pendentes:', error);
-      throw error; 
     }
   };
 

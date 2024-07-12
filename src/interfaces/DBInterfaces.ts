@@ -9,10 +9,11 @@ import { QuestionStudent } from "../models/QuestionStudent";
 import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
 import { CreateUserParams } from "../services/ProfileUserService";
 import { User } from "../models/User";
+import { Language } from "../hooks/useLanguage";
 
 export interface IQuestionsGroupRepository {
   createQuestionsGroup(params: CreateQuestionsGroupParams): Promise<QuestionsGroup>;
-  fetchAllQuestionsGroups(): Promise<QuestionsGroup[]>;
+  fetchAllQuestionsGroups(language: Language): Promise<QuestionsGroup[]>
   updateQuestionsGroup(params: CreateQuestionsGroupParams): Promise<QuestionsGroup>;
 }
 

@@ -10,6 +10,8 @@ import { useAuth } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useSync } from '../context/SyncContext';
 import { FontAwesome5 } from '@expo/vector-icons';
+import useLanguage from '../hooks/useLanguage';
+import { error } from 'console';
 
 const ChoseGroupQuestions: React.FC = () => {
 
@@ -18,6 +20,7 @@ const ChoseGroupQuestions: React.FC = () => {
 
     const { user, signOut } = useAuth();
     const { isSyncEnabled } = useSync();
+    const [selectedLanguage] = useLanguage();
 
     const handleNavigate = (group: QuestionsGroup) => {
         navigation.navigate('GameView', { group });
@@ -32,9 +35,8 @@ const ChoseGroupQuestions: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                const groups = await questionsGroupService.fetchAll();
+                const groups = await questionsGroupService.fetchAll(selectedLanguage);
                 setGroups(groups);
-
 
             } catch (error) {
                 console.error('Erro ao buscar grupos de perguntas:', error);
@@ -43,7 +45,7 @@ const ChoseGroupQuestions: React.FC = () => {
 
         fetchData();
 
-    }, []);
+    }, [selectedLanguage]);
 
     return (
         <SafeAreaView>
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#E5E5E5',
         padding: 5,
         marginRight: 10,
+        gap: 6,
     },
     title: {
         fontSize: 24,

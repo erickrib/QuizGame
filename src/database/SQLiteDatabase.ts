@@ -12,6 +12,7 @@ import { User } from "../models/User";
 import { CreateUserParams } from "../services/ProfileUserService";
 import { QuestionStudent } from "../models/QuestionStudent";
 import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
+import { Language } from '../hooks/useLanguage';
 
 class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository {
 
@@ -305,9 +306,14 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   }
   
   // Funções de Busca de Grupo de Questões
-  async fetchAllQuestionsGroups(): Promise<QuestionsGroup[]> {
-    return await this.conn.manager.find(QuestionsGroup, { relations: ["questions"] });
+  async fetchAllQuestionsGroups(language: Language): Promise<QuestionsGroup[]> {
+    return await this.conn.manager
+      .createQueryBuilder(QuestionsGroup, 'group')
+      .leftJoinAndSelect('group.questions', 'question')
+      .where('question.idioma = :language', { language: language.toUpperCase() })
+      .getMany();
   }
+  
 
   async findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]> {
     return await this.conn.manager.find(Question, {
