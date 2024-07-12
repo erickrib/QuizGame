@@ -15,7 +15,7 @@ export function useDatabaseInitialize() {
         if (!conn.isInitialized) {
           // Inicializa a conexão do banco de dados
           await conn.initialize();
-          console.log('Database connected!');
+          console.warn ('Database connected!');
           setReady(true);
         }
       } catch (error) {

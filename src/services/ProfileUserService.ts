@@ -9,7 +9,7 @@ export interface CreateUserParams {
   companyId: string;
   accountActive: string;
   isLoggedIn: boolean;
-  token?: string;
+  token: string;
 }
 
 export class ProfileUserService {

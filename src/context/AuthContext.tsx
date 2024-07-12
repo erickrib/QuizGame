@@ -5,6 +5,7 @@ import { api } from '../api/api';
 import { profileUserService } from '../services';
 import { CreateUserParams } from '../services/ProfileUserService';
 import { useDatabaseInitialize } from '../hooks/use-database-initialize';
+import { Text } from 'react-native';
 
 interface User {
   id: string;
@@ -13,6 +14,8 @@ interface User {
   profileId: string;
   companyId: string;
   accountActive: string;
+  isLoggedIn?: boolean;
+  token?: string;
 }
 
 interface AuthContextData {
@@ -32,11 +35,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { ready } = useDatabaseInitialize();
+
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
       const response = await api.post('/login', { email, password });
-      const { user: userData, token } = response.data as { user: User, token: string };
+      const { user: userData, token } = response.data as { user: User, token: string};
+
+      userData.isLoggedIn = true;
+      userData.token = token;
 
       setToken(token);
 
@@ -64,51 +72,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateLocalUser = async (userData: User) => {
     const localUser = await profileUserService.findById(parseInt(userData.id, 10));
 
+    const userSqlite = {
+      id: parseInt(userData.id, 10),
+      nome: userData.name,
+      email: userData.email,
+      profileId: userData.profileId,
+      companyId: userData.companyId,
+      accountActive: userData.accountActive,
+      isLoggedIn: true,
+      token: userData.token,
+    };
+
     if (localUser) {
       // Atualize as informações do usuário local
-     const userSqlite = await profileUserService.update({
-        id: parseInt(userData.id),
-        nome: userData.name,
-        email: userData.email,
-        profileId: userData.profileId,
-        companyId: userData.companyId,
-        accountActive: userData.accountActive,
-        isLoggedIn: true,
-        token: token,
-      });
-
-      setUser(userSqlite);
-
+      await profileUserService.update(userSqlite);
     } else {
       // Crie o usuário localmente
-      const userSqlite = await profileUserService.create({
-        id: parseInt(userData.id),
-        nome: userData.name,
-        email: userData.email,
-        profileId: userData.profileId,
-        companyId: userData.companyId,
-        accountActive: userData.accountActive,
-        isLoggedIn: true,
-        token: token,
-      });
+      await profileUserService.create(userSqlite);
+    }
 
       setUser(userSqlite);
-    }
   };
 
   useEffect(() => {
     const loadStoredUser = async () => {
-      try {
-        const storedUser = await profileUserService.fetchAll()[0];
-        if (storedUser && storedUser.token) {
-          const decodedToken = jwtDecode(storedUser.token) as { exp: number };
+      try {        
+        const storedUser = await profileUserService.fetchAll();
+        const loggedUser = storedUser.find(usuario => usuario.isLoggedIn === true);
+
+        console.log('Usuário logado encontrado:', storedUser);
+        
+        if (loggedUser) {
+          const decodedToken = jwtDecode(loggedUser.token) as { exp: number };
           const currentTime = Date.now() / 1000;
           if (decodedToken.exp < currentTime) {
-            await profileUserService.updateLoggedInStatus(storedUser.id.toString(), false);
+            await profileUserService.updateLoggedInStatus(loggedUser.id, false);
             signOut();
           } else {
-            setUser(storedUser);
-            setToken(storedUser.token);
+            setUser(loggedUser);
+            setToken(loggedUser.token);
           }
         }
 
@@ -119,8 +121,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };    
 
-    loadStoredUser();
-  }, []);
+    
+    if (ready) {
+      loadStoredUser();
+    }
+  }, [ready]);
 
   return (
     <AuthContext.Provider value={{ user, token, loading, error, signIn, signOut }}>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
 import CardGroupQuestions from '../components/CardGroupQuestions/CardGroupQuestions';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { questionsGroupService } from '../services';
 import { QuestionsGroup } from '../models/QuestionsGroup';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+
+import { Ionicons } from '@expo/vector-icons';
 import { useSync } from '../context/SyncContext';
 
 const ChoseGroupQuestions: React.FC = () => {
@@ -13,21 +15,24 @@ const ChoseGroupQuestions: React.FC = () => {
     const [groups, setGroups] = useState<QuestionsGroup[]>([]);
     const navigation = useNavigation<any>();
 
-    const { user } = useAuth();
-    const { isSyncing } = useSync();
+    const { user, signOut } = useAuth();
 
     const handleNavigate = (group: QuestionsGroup) => {
         navigation.navigate('GameView', { group });
+    }
+
+    const handleLogout = async () => {
+        await signOut();
+        navigation.navigate('HomeView');
     }
 
     useEffect(() => {
 
         const fetchData = async () => {
             try {
-                if (!isSyncing) {
                     const groups = await questionsGroupService.fetchAll();
                     setGroups(groups);
-                }
+  
 
             } catch (error) {
                 console.error('Erro ao buscar grupos de perguntas:', error);
@@ -36,31 +41,27 @@ const ChoseGroupQuestions: React.FC = () => {
 
         fetchData();
 
-    }, [isSyncing]);
-
-    if (isSyncing) {
-        return (
-            <SafeAreaView style={styles.loadingContainer}>
-                <Text>Sincronizando..</Text>
-                <ActivityIndicator size="large" color="blue" />
-            </SafeAreaView>
-        );
-    }
+    }, []);
 
     return (
         <SafeAreaView>
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.containerProfile}>
-                        <MaterialIcons name='account-circle' size={40} color="orange" />
-                        <Text style={styles.userName}>{user?.nome}</Text>
+                        <View style={styles.containerName}>
+                            <MaterialIcons name='account-circle' size={40} color="orange" />
+                            <Text style={styles.userName}>{user?.nome}</Text>
+                        </View>
+                        <TouchableOpacity style={styles.buttonExit} onPress={handleLogout}>
+                            <Text>Sair</Text>
+                            <Ionicons style={styles.exit} name="exit" size={24} color="gray" />
+                        </TouchableOpacity>
                     </View>
                     <Text style={styles.title}>Escolha o grupo de perguntas</Text>
                     <View style={styles.cardContainer}>
                         <View style={styles.cardRow}>
                             {groups.map((group) => (
                                 <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
-
                             ))}
                         </View>
                     </View>
@@ -85,8 +86,24 @@ const styles = StyleSheet.create({
     containerProfile: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 30,
+        width: '100%',
+    },
+    containerName: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 'auto',
+        width: '100%',
         justifyContent: 'center',
-        marginTop: 20,
+    },
+    buttonExit: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: '#E5E5E5',
+        padding: 5,
+        marginRight: 10,
     },
     title: {
         fontSize: 24,
@@ -96,7 +113,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginTop: 60,
         marginBottom: 30,
-        marginHorizontal: 'auto'
+        marginHorizontal: 'auto',
     },
     cardContainer: {
         flex: 1,
@@ -115,6 +132,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#4B4B4B',
         marginLeft: 10,
+    },
+    exit: {
+       
     }
 });
 

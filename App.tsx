@@ -7,39 +7,27 @@ import ChoseGroupQuestions from './src/pages/ChooseGroupQuestions';
 import GameView from './src/pages/GameView';
 import { useDatabaseInitialize } from './src/hooks/use-database-initialize';
 
-import { profileUserService, questionsGroupService } from './src/services';
+import { profileUserService } from './src/services';
 import { useEffect } from 'react';
 import { questionsService } from './src/services';
 import LoginView from './src/pages/LoginView';
-import { AuthProvider } from './src/context/AuthContext';
+import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { SyncProvider } from './src/context/SyncContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  const { ready } = useDatabaseInitialize();
+
+  const { user } = useAuth();
+
 
   useEffect(() => {
-    if (ready) {
-      const fetchUsuarios = async () => {
-        try {
-          const users = await profileUserService.fetchAll();
-          console.error('Usuários:', users.map(user => user.nome));
-        } catch (error) {
-          console.error('Erro ao buscar usuários:', error);
-        }
-      };
-      fetchUsuarios();
-    }
-  }, [ready]);
-
-  useEffect(() => {
-    if (ready) {
+   
       const fetchQuestions = async () => {
         try {
           const questions = await questionsService.fetchAll();
-          console.error('Questões:', questions.length);
+          console.warn('Questões:', questions.length);
         } catch (error) {
           console.error('Erro ao buscar questões:', error);
         }
@@ -51,12 +39,17 @@ export default function App() {
         } catch (error) {
           console.error('Erro ao limpar dados:', error);
         }
-      }
-
-   cleardata();
-   // fetchQuestions();
     }
-  }, [ready]);
+
+   // cleardata();
+
+   if (user?.id) {
+    fetchQuestions();
+    }
+
+    console.log(user?.nome);
+    
+  }, [user]);
 
   return (
     <AuthProvider>
