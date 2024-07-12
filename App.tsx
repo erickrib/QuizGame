@@ -22,7 +22,6 @@ export default function App() {
 
   const { user } = useAuth();
 
-
   useEffect(() => {
 
     const fetchQuestions = async () => {
@@ -42,7 +41,7 @@ export default function App() {
       }
     }
 
-    // cleardata();
+   // cleardata();
 
     if (user?.id) {
       fetchQuestions();

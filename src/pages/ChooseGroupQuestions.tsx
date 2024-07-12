@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import CardGroupQuestions from '../components/CardGroupQuestions/CardGroupQuestions';
 import { useNavigation } from '@react-navigation/native';
 import { questionsGroupService } from '../services';
@@ -11,7 +11,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSync } from '../context/SyncContext';
 import { FontAwesome5 } from '@expo/vector-icons';
 import useLanguage from '../hooks/useLanguage';
-import { error } from 'console';
 
 const ChoseGroupQuestions: React.FC = () => {
 
@@ -19,7 +18,7 @@ const ChoseGroupQuestions: React.FC = () => {
     const navigation = useNavigation<any>();
 
     const { user, signOut } = useAuth();
-    const { isSyncEnabled } = useSync();
+    const { isSyncing, isSyncEnabled } = useSync();
     const [selectedLanguage] = useLanguage();
 
     const handleNavigate = (group: QuestionsGroup) => {
@@ -43,9 +42,11 @@ const ChoseGroupQuestions: React.FC = () => {
             }
         };
 
-        fetchData();
+        if (!isSyncing) {
+            fetchData();
+        }
 
-    }, [selectedLanguage]);
+    }, [selectedLanguage, isSyncing]);
 
     return (
         <SafeAreaView>
@@ -66,13 +67,20 @@ const ChoseGroupQuestions: React.FC = () => {
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.title}>Escolha o grupo de perguntas</Text>
-                    <View style={styles.cardContainer}>
-                        <View style={styles.cardRow}>
-                            {groups.map((group) => (
-                                <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
-                            ))}
-                        </View>
-                    </View>
+                    {
+                        !isSyncing ?
+                            <View style={styles.cardContainer}>
+                                <View style={styles.cardRow}>
+                                    {groups.map((group) => (
+                                        <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
+                                    ))}
+                                </View>
+                            </View> :
+                            <View style={styles.loadingContainer}>
+                                <ActivityIndicator size="large" color="#1356A1" />
+                                <Text style={styles.loadingText}>Carregando...</Text>
+                            </View>
+                    }
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -85,10 +93,16 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 90,
+        fontSize: 20,
     },
     textSync: {
         color: 'gray',
         fontSize: 16,
+    },
+    loadingText: {
+        color: 'gray',
+        fontSize: 20,
     },
     container: {
         flex: 1,

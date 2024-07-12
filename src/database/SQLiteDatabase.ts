@@ -365,15 +365,15 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
     // Remove todos os registros de todas as tabelas
     await conn.transaction(async (trans) => {
-   //   await trans.delete(QuestionAnswer, {});
+      await trans.delete(QuestionAnswer, {});
 
       await trans.delete(QuestionStudent, {});
 
-      // await trans.delete(Question, {});
+      await trans.delete(Question, {});
 
-      // await trans.delete(QuestionsGroup, {});
+      await trans.delete(QuestionsGroup, {});
 
-      // await trans.delete(User, {});
+      await trans.delete(User, {});
   });
 
     console.warn('Banco de dados limpo!');

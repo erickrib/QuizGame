@@ -30,7 +30,12 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (isConnected) {
       syncData();
+      setIsSyncEnabled(true);
+
+    } else {
+        setIsSyncEnabled(false);
     }
+
   }, [isConnected]);
 
   const syncData = async () => {
@@ -50,7 +55,7 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const syncTransformedQuestions = async () => {
     try {
-      const activitiesList =  await api.get(`/atividade/findbyusuario/${user.id}`, {
+      const activitiesList =  await api.get(`/atividade/offline/${user.id}/2024-07-10`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
