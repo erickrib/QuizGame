@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeView from './src/pages/HomeView';
 import ChoseGroupQuestions from './src/pages/ChooseGroupQuestions';
 import GameView from './src/pages/GameView';
-import { useDatabaseInitialize } from './src/hooks/use-database-initialize';
+import { useDatabaseInitialize } from './src/hooks/useDatabaseInitialize';
 
 import { profileUserService } from './src/services';
 import { useEffect } from 'react';
@@ -41,7 +41,7 @@ export default function App() {
         }
     }
 
-   // cleardata();
+    // cleardata();
 
    if (user?.id) {
     fetchQuestions();

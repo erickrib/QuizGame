@@ -4,8 +4,9 @@ import  { jwtDecode } from 'jwt-decode';
 import { api } from '../api/api';
 import { profileUserService } from '../services';
 import { CreateUserParams } from '../services/ProfileUserService';
-import { useDatabaseInitialize } from '../hooks/use-database-initialize';
+import { useDatabaseInitialize } from '../hooks/useDatabaseInitialize';
 import { Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 interface User {
   id: string;
@@ -34,6 +35,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const navigation = useNavigation<any>();
 
   const { ready } = useDatabaseInitialize();
 
@@ -65,7 +68,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
     setToken(null);
     setError(null);
-    await AsyncStorage.removeItem('userToken');
     await profileUserService.updateLoggedInStatus(user?.id, false);
   };
 
@@ -108,6 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (decodedToken.exp < currentTime) {
             await profileUserService.updateLoggedInStatus(loggedUser.id, false);
             signOut();
+            navigation.navigate('HomeView');
           } else {
             setUser(loggedUser);
             setToken(loggedUser.token);

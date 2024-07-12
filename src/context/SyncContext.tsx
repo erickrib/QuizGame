@@ -3,25 +3,35 @@ import { useAuth } from './AuthContext';
 import { api } from '../api/api';
 import { syncQuestions } from '../utils/syncQuestions';
 import { syncPendingAnswers } from '../utils/syncPendingAnswers';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 interface SyncContextData {
   syncData: () => Promise<void>;
   syncTransformedQuestions: () => Promise<void>;
   syncPendingAnswersUser: () => Promise<void>;
   isSyncing: boolean;
+  isSyncEnabled: boolean;
 }
 
 const SyncContext = createContext<SyncContextData>({} as SyncContextData);
 
 export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isSyncEnabled, setIsSyncEnabled] = useState(true);
   const { user, token } = useAuth();
+  const isConnected = useNetworkStatus();
 
   useEffect(() => {
     if (user && token) {
       syncData();
     }
   }, [user, token]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      syncData();
+    }
+  }, [isConnected]);
 
   const syncData = async () => {
     setIsSyncing(true);
@@ -49,7 +59,7 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error('Erro ao sincronizar questões:', error);
-      throw error; 
+      setIsSyncEnabled(false);
     }
   };
 
@@ -63,7 +73,7 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <SyncContext.Provider value={{ syncData, syncTransformedQuestions, syncPendingAnswersUser, isSyncing }}>
+    <SyncContext.Provider value={{ syncData, syncTransformedQuestions, syncPendingAnswersUser, isSyncing, isSyncEnabled }}>
       {children}
     </SyncContext.Provider>
   );

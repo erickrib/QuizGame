@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 
 import { Ionicons } from '@expo/vector-icons';
 import { useSync } from '../context/SyncContext';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const ChoseGroupQuestions: React.FC = () => {
 
@@ -16,6 +17,7 @@ const ChoseGroupQuestions: React.FC = () => {
     const navigation = useNavigation<any>();
 
     const { user, signOut } = useAuth();
+    const { isSyncEnabled } = useSync();
 
     const handleNavigate = (group: QuestionsGroup) => {
         navigation.navigate('GameView', { group });
@@ -47,6 +49,10 @@ const ChoseGroupQuestions: React.FC = () => {
         <SafeAreaView>
             <ScrollView>
                 <View style={styles.container}>
+                    <View style={styles.containerSync}>
+                        <FontAwesome5 name="sync-alt" size={15} color="gray" />
+                        <Text style={styles.textSync}>{isSyncEnabled? 'Sincronização ativada' : 'Sincronização desativada'}</Text>
+                    </View>
                     <View style={styles.containerProfile}>
                         <View style={styles.containerName}>
                             <MaterialIcons name='account-circle' size={40} color="orange" />
@@ -78,10 +84,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    textSync: {
+        color: 'gray',
+        fontSize: 16,
+    },
     container: {
         flex: 1,
         alignItems: 'center',
         paddingTop: 0,
+        marginTop: 25,
+
+    },
+    containerSync: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
     },
     containerProfile: {
         flexDirection: 'row',
