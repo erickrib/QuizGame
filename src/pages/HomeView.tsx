@@ -1,9 +1,10 @@
-import { Text, StyleSheet, SafeAreaView, Image, View } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Image, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import QuizButton from '../components/QuizButton/QuizButton';
 import { useAuth } from '../context/AuthContext';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 
 const HomeView: React.FC = () => {
     const navi = useNavigation<any>();
@@ -15,6 +16,10 @@ const HomeView: React.FC = () => {
         navi.navigate(user?.id ? "ChoseGroupQuestions" : "UserView");
     };
 
+    const handleSettings = () => {
+        navi.navigate("SettingsView");
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Image
@@ -23,8 +28,11 @@ const HomeView: React.FC = () => {
             />
             <View style={styles.containerConection}>
                 <FontAwesome5 name="wifi" size={20} color={isConnected ? 'green' : 'gray'} />
-                <Text style={[styles.textConnection, isConnected ? {color: 'green'} : {color: 'gray'}]}>{isConnected ? 'Online' : 'Offline'}</Text>
+                <Text style={[styles.textConnection, isConnected ? { color: 'green' } : { color: 'gray' }]}>{isConnected ? 'Online' : 'Offline'}</Text>
             </View>
+            <TouchableOpacity style={styles.buttonContainer} onPress={handleSettings}>
+                <Fontisto name="player-settings" size={40} color="#1356A1" />
+            </TouchableOpacity>
             <Text style={styles.title}>Quiz</Text>
             <QuizButton text={"Start"} onPress={handleStartQuiz} />
         </SafeAreaView>
@@ -38,6 +46,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         gap: 10,
         fontWeight: 'bold',
+    },
+    buttonContainer: {
+        marginLeft: 'auto',
+        marginRight: 10,
     },
     textConnection: {
         color: 'green',
@@ -57,7 +69,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 60,
         fontWeight: 'bold',
-        marginTop: 'auto',
+        marginVertical: 'auto',
         transform: [{ rotate: '8deg' }]
     }
 });

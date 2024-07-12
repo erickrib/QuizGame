@@ -32,9 +32,9 @@ const ChoseGroupQuestions: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                    const groups = await questionsGroupService.fetchAll();
-                    setGroups(groups);
-  
+                const groups = await questionsGroupService.fetchAll();
+                setGroups(groups);
+
 
             } catch (error) {
                 console.error('Erro ao buscar grupos de perguntas:', error);
@@ -51,7 +51,7 @@ const ChoseGroupQuestions: React.FC = () => {
                 <View style={styles.container}>
                     <View style={styles.containerSync}>
                         <FontAwesome5 name="sync-alt" size={15} color="gray" />
-                        <Text style={styles.textSync}>{isSyncEnabled? 'Sincronização ativada' : 'Sincronização desativada'}</Text>
+                        <Text style={styles.textSync}>{isSyncEnabled ? 'Sincronização ativada' : 'Sincronização desativada'}</Text>
                     </View>
                     <View style={styles.containerProfile}>
                         <View style={styles.containerName}>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     exit: {
-       
+
     }
 });
 

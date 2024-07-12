@@ -26,13 +26,11 @@ const UserView: React.FC = () => {
 
     navigation.navigate('ChoseGroupQuestions', { user: selectedUsuario });
   };
-
   const fetchUsuarios = async () => {
     const users = await profileUserService.fetchAll();
     setUsuarios(users);
     setSelectedUsuario(users[0]);
     setIsUsuarioSelected(true);
-
   };
 
   const handleAddUsuario = async (params: CreateUserParams) => {
