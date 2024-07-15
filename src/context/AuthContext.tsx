@@ -95,9 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const loadStoredUser = async () => {
       try {
         const storedUser = await profileUserService.fetchAll();
-        const loggedUser = storedUser.find(usuario => usuario.isLoggedIn === false);
-
-        console.warn('Usuário logado encontrado:', storedUser.map(user => user.isLoggedIn));
+        const loggedUser = storedUser.find(usuario => usuario.isLoggedIn === true);
 
         if (loggedUser) {
           const decodedToken = jwtDecode(loggedUser.token) as { exp: number };

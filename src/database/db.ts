@@ -18,7 +18,7 @@ export const initializeDatabase = async () => {
   try {
     if (!conn.isInitialized) {
       await conn.initialize();
-      console.warn ('Banco de dados conectado!');
+      console.log('Banco de dados conectado!');
     }
     return true;
   } catch (error) {
