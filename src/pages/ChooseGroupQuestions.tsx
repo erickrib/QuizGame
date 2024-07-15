@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSync } from '../context/SyncContext';
 import { FontAwesome5 } from '@expo/vector-icons';
 import useLanguage from '../hooks/useLanguage';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 const ChoseGroupQuestions: React.FC = () => {
 
@@ -18,7 +19,8 @@ const ChoseGroupQuestions: React.FC = () => {
     const navigation = useNavigation<any>();
 
     const { user, signOut } = useAuth();
-    const { isSyncing, isSyncEnabled } = useSync();
+    const { isLoading, isSyncEnabled } = useSync();
+    const isConnected = useNetworkStatus();
     const [selectedLanguage] = useLanguage();
 
     const handleNavigate = (group: QuestionsGroup) => {
@@ -42,11 +44,11 @@ const ChoseGroupQuestions: React.FC = () => {
             }
         };
 
-        if (!isSyncing) {
+        if (!isSyncEnabled && !isLoading) {
             fetchData();
         }
 
-    }, [selectedLanguage, isSyncing]);
+    }, [selectedLanguage, isSyncEnabled, isLoading]);
 
     return (
         <SafeAreaView>
@@ -54,7 +56,7 @@ const ChoseGroupQuestions: React.FC = () => {
                 <View style={styles.container}>
                     <View style={styles.containerSync}>
                         <FontAwesome5 name="sync-alt" size={15} color="gray" />
-                        <Text style={styles.textSync}>{isSyncEnabled ? 'Sincronização ativada' : 'Sincronização desativada'}</Text>
+                        <Text style={styles.textSync}>{isConnected ? 'Sincronização ativada' : 'Sincronização desativada'}</Text>
                     </View>
                     <View style={styles.containerProfile}>
                         <View style={styles.containerName}>
@@ -68,18 +70,19 @@ const ChoseGroupQuestions: React.FC = () => {
                     </View>
                     <Text style={styles.title}>Escolha o grupo de perguntas</Text>
                     {
-                        !isSyncing ?
+                        isLoading ?
+                        <View style={styles.loadingContainer}>
+                                <ActivityIndicator size="large" color="#1356A1" />
+                                <Text style={styles.loadingText}>Carregando...</Text>
+                            </View>
+                            : 
                             <View style={styles.cardContainer}>
                                 <View style={styles.cardRow}>
                                     {groups.map((group) => (
                                         <CardGroupQuestions key={group.id} onPress={() => handleNavigate(group)} text={group.nome} />
                                     ))}
                                 </View>
-                            </View> :
-                            <View style={styles.loadingContainer}>
-                                <ActivityIndicator size="large" color="#1356A1" />
-                                <Text style={styles.loadingText}>Carregando...</Text>
-                            </View>
+                            </View> 
                     }
                 </View>
             </ScrollView>

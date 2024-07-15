@@ -4,9 +4,8 @@ import  { jwtDecode } from 'jwt-decode';
 import { api } from '../api/api';
 import { profileUserService } from '../services';
 import { CreateUserParams } from '../services/ProfileUserService';
-import { useDatabaseInitialize } from '../hooks/useDatabaseInitialize';
-import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { initializeDatabase } from '../database/db';
 
 interface User {
   id: string;
@@ -35,10 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
   const navigation = useNavigation<any>();
-
-  const { ready } = useDatabaseInitialize();
 
   const signIn = async (email: string, password: string) => {
     setLoading(true);
@@ -81,15 +77,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       profileId: userData.profileId,
       companyId: userData.companyId,
       accountActive: userData.accountActive,
-      isLoggedIn: true,
+      isLoggedIn: userData.isLoggedIn,
       token: userData.token,
     };
 
     if (localUser) {
-      // Atualize as informações do usuário local
       await profileUserService.update(userSqlite);
     } else {
-      // Crie o usuário localmente
       await profileUserService.create(userSqlite);
     }
 
@@ -97,13 +91,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    const loadStoredUser = async () => {
-      try {        
-        const storedUser = await profileUserService.fetchAll();
-        const loggedUser = storedUser.find(usuario => usuario.isLoggedIn === true);
 
-        console.log('Usuário logado encontrado:', storedUser);
-        
+    const loadStoredUser = async () => {
+      try {
+        const storedUser = await profileUserService.fetchAll();
+        const loggedUser = storedUser.find(usuario => usuario.isLoggedIn === false);
+
+        console.warn('Usuário logado encontrado:', storedUser.map(user => user.isLoggedIn));
+
         if (loggedUser) {
           const decodedToken = jwtDecode(loggedUser.token) as { exp: number };
           const currentTime = Date.now() / 1000;
@@ -116,19 +111,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setToken(loggedUser.token);
           }
         }
-
       } catch (err) {
         console.error('Falha ao carregar usuário do banco de dados local:', err);
       } finally {
         setLoading(false);
       }
-    };    
+    };
 
-    
-    if (ready) {
-      loadStoredUser();
-    }
-  }, [ready]);
+    loadStoredUser();
+
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, token, loading, error, signIn, signOut }}>

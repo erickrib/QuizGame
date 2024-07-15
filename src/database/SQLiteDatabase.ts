@@ -186,7 +186,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       perfilUsuario.profileId = params.profileId;
       perfilUsuario.companyId = params.companyId;
       perfilUsuario.accountActive = params.accountActive;
-      perfilUsuario.isLoggedIn = true;
+      perfilUsuario.isLoggedIn = params.isLoggedIn;
       perfilUsuario.token = params.token
 
       await trans.save(perfilUsuario);
@@ -208,6 +208,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         existingUser.profileId = params.profileId;
         existingUser.companyId = params.companyId;
         existingUser.accountActive = params.accountActive;
+        existingUser.isLoggedIn = params.isLoggedIn;
   
         const updatedUser = await trans.save(existingUser);
         return updatedUser;
@@ -264,15 +265,11 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
     return await this.conn.transaction(async (trans) => {
       try {
-        console.log('Iniciando transação para criar QuestionStudent');
-
         // Encontre o perfil de usuário associado
         const perfilUsuario = await trans.findOneOrFail(User, { where: { id: params.id_perfil_usuario } });
-        console.log('PerfilUsuario encontrado:', perfilUsuario);
 
         // Encontra a questão associada
         const question = await trans.findOneOrFail(Question, { where: { id: params.id_atividade } });
-        console.log('Question encontrada:', question);
 
         // Crie o objeto QuestionStudent
         const questionStudent = new QuestionStudent();
@@ -282,8 +279,6 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         questionStudent.codigoAtividade = params.codigo_atividade;
         questionStudent.tempo_execucao = params.tempo_execucao;
         questionStudent.isPendingSync = params.is_pending_sync;
-
-        console.warn('QuestionStudent criado:', questionStudent);
 
         const savedQuestionStudent = await trans.save(questionStudent);
         return savedQuestionStudent;

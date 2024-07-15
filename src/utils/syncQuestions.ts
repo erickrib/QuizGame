@@ -18,43 +18,50 @@ interface Activity {
     respostaCorreta: string;
 }
 
-export const syncQuestions = async (
-    activities: Activity[],
-) => {
-    const localQuestions = await questionsService.fetchAll(); 
+const identifyChanges = (activities: Activity[], localQuestions: any[]) => {
     const localQuestionIds = localQuestions.map(question => question.id);
-    
     const serverQuestionIds = activities.map(activity => activity.id);
 
     const questionsToAdd = activities.filter(activity => !localQuestionIds.includes(activity.id));
 
     const questionsToUpdate = activities.filter(activity => {
         const localQuestion = localQuestions.find(q => q.id === activity.id);
-        
+
         if (localQuestion) {
-            return  activity.produtoId !== localQuestion.grupo.id ||
-            activity.nome !== localQuestion.nome ||
-            activity.descricao !== localQuestion.descricao ||
-            activity.idioma !== localQuestion.idioma ||
-            activity.codigoAtividade !== localQuestion.codigo ||
-            activity.tipoAtividade !== localQuestion.tipo ||
-            (activity.resposta1 !== null && activity.resposta1 !== localQuestion.resposta.resposta_1) ||
-            (activity.resposta2 !== null && activity.resposta2 !== localQuestion.resposta.resposta_2) ||
-            (activity.resposta3 !== null && activity.resposta3 !== localQuestion.resposta.resposta_3) ||
-            (activity.resposta4 !== null && activity.resposta4 !== localQuestion.resposta.resposta_4) ||
-            (activity.respostaCorreta!== localQuestion.resposta.resposta_correta);
+            return activity.produtoId !== localQuestion.grupo.id ||
+                activity.nome !== localQuestion.nome ||
+                activity.descricao !== localQuestion.descricao ||
+                activity.idioma !== localQuestion.idioma ||
+                activity.codigoAtividade !== localQuestion.codigo ||
+                activity.tipoAtividade !== localQuestion.tipo ||
+                (activity.resposta1 !== null && activity.resposta1 !== localQuestion.resposta.resposta_1) ||
+                (activity.resposta2 !== null && activity.resposta2 !== localQuestion.resposta.resposta_2) ||
+                (activity.resposta3 !== null && activity.resposta3 !== localQuestion.resposta.resposta_3) ||
+                (activity.resposta4 !== null && activity.resposta4 !== localQuestion.resposta.resposta_4) ||
+                (activity.respostaCorreta !== localQuestion.resposta.resposta_correta);
         }
-        
+
         return false; 
     });
 
     const questionsToDelete = localQuestions.filter(question => !serverQuestionIds.includes(question.id));
 
-    for (const question of questionsToDelete) {
-        await questionsService.delete(question.id);
-    }
+    return { questionsToAdd, questionsToUpdate, questionsToDelete };
+};
 
+const handleDeletions = async (questionsToDelete: any[]) => {
+    for (const question of questionsToDelete) {
+        if (question && question.id) {
+            await questionsService.delete(question.id);
+        } else {
+            console.warn('Tentando deletar uma pergunta inválida:', question);
+        }
+    }
+};
+
+const handleAdditions = async (questionsToAdd: Activity[]) => {
     const groupedActivitiesToAdd: Record<number, Activity[]> = {};
+
     questionsToAdd.forEach(activity => {
         if (!groupedActivitiesToAdd[activity.produtoId]) {
             groupedActivitiesToAdd[activity.produtoId] = [];
@@ -87,7 +94,9 @@ export const syncQuestions = async (
 
         await questionsGroupService.create(groupParams);
     }
+};
 
+const handleUpdates = async (questionsToUpdate: Activity[]) => {
     for (const activity of questionsToUpdate) {
         const groupName = `material${activity.produtoId}`;
 
@@ -117,3 +126,21 @@ export const syncQuestions = async (
         await questionsGroupService.update(groupParams);
     }
 };
+
+export const syncQuestions = async (activities: Activity[]) => {
+    const localQuestions = await questionsService.fetchAll();
+    const { questionsToAdd, questionsToUpdate, questionsToDelete } = identifyChanges(activities, localQuestions);
+
+    try {
+        await Promise.all([
+            handleDeletions(questionsToDelete),
+            handleAdditions(questionsToAdd),
+            handleUpdates(questionsToUpdate)
+        ]);
+
+        console.log("Sincronização de questões concluída com sucesso");
+    } catch (error) {
+        console.error("Erro ao sincronizar questões:", error);
+    }
+};
+

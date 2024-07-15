@@ -2,8 +2,11 @@ import { api } from "../api/api";
 import { questionStudentService } from "../services";
 
 export const syncPendingAnswers = async (token: string) => {
+
     try {
         const pendingAnswers = await questionStudentService.findPendingSyncAnswers();
+
+        prettyPrintJSON(pendingAnswers);
 
         if (pendingAnswers.length > 0) {
             const formattedData = pendingAnswers.map(answer => ({
@@ -29,3 +32,7 @@ export const syncPendingAnswers = async (token: string) => {
         console.error('Erro ao sincronizar respostas pendentes:', error);
     }
 };
+
+function prettyPrintJSON(jsonArray) {
+    console.log(JSON.stringify(jsonArray, null, 2));
+}

@@ -13,7 +13,7 @@ const HomeView: React.FC = () => {
     const isConnected = useNetworkStatus();
 
     const handleStartQuiz = () => {
-        navi.navigate(user?.id ? "ChoseGroupQuestions" : "UserView");
+       navi.navigate(user?.id ? "ChoseGroupQuestions" : "UserView");
     };
 
     const handleSettings = () => {

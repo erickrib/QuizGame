@@ -13,3 +13,16 @@ export const config: DataSourceOptions = {
 
 // Cria uma nova instância de DataSource usando a configuração definida acima
 export const conn = new DataSource(config);
+
+export const initializeDatabase = async () => {
+  try {
+    if (!conn.isInitialized) {
+      await conn.initialize();
+      console.warn ('Banco de dados conectado!');
+    }
+    return true;
+  } catch (error) {
+    console.error('Erro ao inicializar o Banco de dados:', error);
+    return false;
+  }
+};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { conn } from '../database/db';
+import { conn, initializeDatabase } from '../database/db';
 
 /**
 * Hook para inicializar e gerenciar o estado da conexão do banco de dados.
@@ -9,22 +9,12 @@ export function useDatabaseInitialize() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    async function initializeDatabase() {
-      try {
-        // Verifica se o banco de dados já está inicializado
-        if (!conn.isInitialized) {
-          // Inicializa a conexão do banco de dados
-          await conn.initialize();
-          console.warn ('Database connected!');
-          setReady(true);
-        }
-      } catch (error) {
-        console.error('Error on database initialize:', error);
-        setReady(false);
-      }
+    async function init() {
+      const dbReady = await initializeDatabase();
+      setReady(dbReady);
     }
 
-    initializeDatabase();
+    init();
 
     // limpa e destrói a conexão do banco de dados na desmontagem do componente
     return () => {
