@@ -42,8 +42,10 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsSyncing(true);
 
     try {
-      await syncTransformedQuestions();
-      await syncPendingAnswersUser();
+        Promise.all([
+            syncTransformedQuestions(),
+            syncPendingAnswersUser()
+        ]);
 
     } catch (error) {
       console.error('Erro ao sincronizar dados:', error);
@@ -71,7 +73,9 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const syncPendingAnswersUser = async () => {
     try {
+     if (isConnected) {   
       await syncPendingAnswers(token);
+     }
     } catch (error) {
       console.error('Erro ao sincronizar respostas pendentes:', error);
     }

@@ -126,6 +126,7 @@ const GameView: React.FC = () => {
     // Registra a resposta
     const logResponse = async (status: string) => {
         const statusResposta = status;
+        
         await questionStudentService.create({
             id_atividade: currentQuestion.id,
             id_perfil_usuario: user.id,
