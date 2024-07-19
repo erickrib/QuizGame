@@ -1,227 +1,530 @@
-[
-    {
-        "nome": "Questões de Matemática",
-        "questions": [
-            {
-                "nome": "Qual é o resultado de 82 + 57?",
-                "descricao": "Calcule a soma.",
-                "resposta": {
-                    "resposta_1": "139",
-                    "resposta_2": "138",
-                    "resposta_3": "135",
-                    "resposta_4": "143",
-                    "resposta_correta": "139"
-                }
-            },
-            {
-                "nome": "Quanto é 45 - 18?",
-                "descricao": "Efetue a subtração.",
-                "resposta": {
-                    "resposta_1": "27",
-                    "resposta_2": "28",
-                    "resposta_3": "26",
-                    "resposta_4": "29",
-                    "resposta_correta": "27"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 7 * 8?",
-                "descricao": "Realize a multiplicação.",
-                "resposta": {
-                    "resposta_1": "54",
-                    "resposta_2": "55",
-                    "resposta_3": "56",
-                    "resposta_4": "57",
-                    "resposta_correta": "56"
-                }
-            },
-            {
-                "nome": "Quanto é 98 / 7?",
-                "descricao": "Efetue a divisão.",
-                "resposta": {
-                    "resposta_1": "14",
-                    "resposta_2": "12",
-                    "resposta_3": "16",
-                    "resposta_4": "18",
-                    "resposta_correta": "14"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 32 + 19?",
-                "descricao": "Calcule a soma.",
-                "resposta": {
-                    "resposta_1": "51",
-                    "resposta_2": "50",
-                    "resposta_3": "52",
-                    "resposta_4": "53",
-                    "resposta_correta": "51"
-                }
-            },
-            {
-                "nome": "Quanto é 73 - 29?",
-                "descricao": "Efetue a subtração.",
-                "resposta": {
-                    "resposta_1": "44",
-                    "resposta_2": "45",
-                    "resposta_3": "46",
-                    "resposta_4": "47",
-                    "resposta_correta": "44"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 6 * 9?",
-                "descricao": "Realize a multiplicação.",
-                "resposta": {
-                    "resposta_1": "53",
-                    "resposta_2": "54",
-                    "resposta_3": "55",
-                    "resposta_4": "56",
-                    "resposta_correta": "54"
-                }
-            },
-            {
-                "nome": "Quanto é 84 / 7?",
-                "descricao": "Efetue a divisão.",
-                "resposta": {
-                    "resposta_1": "11",
-                    "resposta_2": "12",
-                    "resposta_3": "13",
-                    "resposta_4": "14",
-                    "resposta_correta": "12"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 17 + 34?",
-                "descricao": "Calcule a soma.",
-                "resposta": {
-                    "resposta_1": "49",
-                    "resposta_2": "50",
-                    "resposta_3": "51",
-                    "resposta_4": "52",
-                    "resposta_correta": "51"
-                }
-            },
-            {
-                "nome": "Quanto é 64 - 28?",
-                "descricao": "Efetue a subtração.",
-                "resposta": {
-                    "resposta_1": "36",
-                    "resposta_2": "37",
-                    "resposta_3": "38",
-                    "resposta_4": "39",
-                    "resposta_correta": "36"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 9 * 7?",
-                "descricao": "Realize a multiplicação.",
-                "resposta": {
-                    "resposta_1": "61",
-                    "resposta_2": "62",
-                    "resposta_3": "63",
-                    "resposta_4": "64",
-                    "resposta_correta": "63"
-                }
-            },
-            {
-                "nome": "Quanto é 72 / 8?",
-                "descricao": "Efetue a divisão.",
-                "resposta": {
-                    "resposta_1": "8",
-                    "resposta_2": "9",
-                    "resposta_3": "10",
-                    "resposta_4": "11",
-                    "resposta_correta": "9"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 25 + 38?",
-                "descricao": "Calcule a soma.",
-                "resposta": {
-                    "resposta_1": "62",
-                    "resposta_2": "63",
-                    "resposta_3": "64",
-                    "resposta_4": "65",
-                    "resposta_correta": "63"
-                }
-            },
-            {
-                "nome": "Quanto é 91 - 37?",
-                "descricao": "Efetue a subtração.",
-                "resposta": {
-                    "resposta_1": "53",
-                    "resposta_2": "54",
-                    "resposta_3": "55",
-                    "resposta_4": "56",
-                    "resposta_correta": "54"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 8 * 6?",
-                "descricao": "Realize a multiplicação.",
-                "resposta": {
-                    "resposta_1": "46",
-                    "resposta_2": "47",
-                    "resposta_3": "48",
-                    "resposta_4": "49",
-                    "resposta_correta": "48"
-                }
-            },
-            {
-                "nome": "Quanto é 80 / 10?",
-                "descricao": "Efetue a divisão.",
-                "resposta": {
-                    "resposta_1": "7",
-                    "resposta_2": "8",
-                    "resposta_3": "9",
-                    "resposta_4": "10",
-                    "resposta_correta": "8"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 38 + 27?",
-                "descricao": "Calcule a soma.",
-                "resposta": {
-                    "resposta_1": "63",
-                    "resposta_2": "64",
-                    "resposta_3": "65",
-                    "resposta_4": "66",
-                    "resposta_correta": "65"
-                }
-            },
-            {
-                "nome": "Quanto é 68 - 31?",
-                "descricao": "Efetue a subtração.",
-                "resposta": {
-                    "resposta_1": "36",
-                    "resposta_2": "37",
-                    "resposta_3": "38",
-                    "resposta_4": "39",
-                    "resposta_correta": "37"
-                }
-            },
-            {
-                "nome": "Qual é o resultado de 12 * 9?",
-                "descricao": "Realize a multiplicação.",
-                "resposta": {
-                    "resposta_1": "108",
-                    "resposta_2": "109",
-                    "resposta_3": "110",
-                    "resposta_4": "111",
-                    "resposta_correta": "108"
-                }
-            },
-            {
-                "nome": "Quanto é 96 / 8?",
-                "descricao": "Efetue a divisão.",
-                "resposta": {
-                    "resposta_1": "10",
-                    "resposta_2": "11",
-                    "resposta_3": "12",
-                    "resposta_4": "13",
-                    "resposta_correta": "12"
-                }
-            }
-        ]
-    }
-]
+{
+    "listaAtividades": [
+        {
+			"id": 1,
+			"nome": "Atividade",
+			"descricao": "Se você tem 18 lápis e dá 3 para seu amigo, quantos lápis você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0032",
+			"resposta1": "20",
+			"resposta2": "25",
+			"resposta3": "10",
+			"resposta4": "15",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2,
+			"nome": "Atividade",
+			"descricao": "Quanto é 15 + 7?",
+			"produtoId": 2,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0033",
+			"resposta1": "19",
+			"resposta2": "20",
+			"resposta3": "22",
+			"resposta4": "21",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 3,
+			"nome": "Atividade",
+			"descricao": "Se você tem 30 bolinhas e perde 10, quantas bolinhas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0034",
+			"resposta1": "20",
+			"resposta2": "15",
+			"resposta3": "25",
+			"resposta4": "30",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 4,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 9 - 2?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0035",
+			"resposta1": "6",
+			"resposta2": "5",
+			"resposta3": "7",
+			"resposta4": "8",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 5,
+			"nome": "Atividade",
+			"descricao": "Se você tem 24 balas e dá 8 para seu amigo, quantas balas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0036",
+			"resposta1": "14",
+			"resposta2": "16",
+			"resposta3": "18",
+			"resposta4": "12",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 6,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 8 x 7?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0037",
+			"resposta1": "54",
+			"resposta2": "64",
+			"resposta3": "45",
+			"resposta4": "56",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 7,
+			"nome": "Atividade",
+			"descricao": "Se um pacote de lápis tem 8 lápis e você tem 6 pacotes, quantos lápis você tem no total?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0038",
+			"resposta1": "40",
+			"resposta2": "48",
+			"resposta3": "32",
+			"resposta4": "36",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 8,
+			"nome": "Atividade",
+			"descricao": "Quanto é 56 ÷ 7?",
+			"produtoId": 2,
+			"nivelAtividade": 2,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0039",
+			"resposta1": "7",
+			"resposta2": "9",
+			"resposta3": "8",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 9,
+			"nome": "Atividade",
+			"descricao": "Se você tem 40 chocolates e divide igualmente entre 5 amigos, quantos chocolates cada um receberá?",
+			"produtoId": 2,
+			"nivelAtividade": 2,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0040",
+			"resposta1": "8",
+			"resposta2": "7",
+			"resposta3": "9",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 10,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 89 - 42?",
+			"produtoId": 2,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0041",
+			"resposta1": "47",
+			"resposta2": "37",
+			"resposta3": "57",
+			"resposta4": "27",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 11,
+			"nome": "Atividade",
+			"descricao": "Se você tem 63 balas e dá 21 para seu amigo, quantas balas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0042",
+			"resposta1": "32",
+			"resposta2": "52",
+			"resposta3": "62",
+			"resposta4": "42",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2765,
+			"nome": "Atividade",
+			"descricao": "Quanto é 15 x 4?",
+			"produtoId": 2,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0043",
+			"resposta1": "50",
+			"resposta2": "60",
+			"resposta3": "70",
+			"resposta4": "40",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2766,
+			"nome": "Atividade",
+			"descricao": "Se você tem 78 bolinhas e perde 25, quantas bolinhas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0044",
+			"resposta1": "43",
+			"resposta2": "63",
+			"resposta3": "53",
+			"resposta4": "73",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 2767,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 54 ÷ 6?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0045",
+			"resposta1": "10",
+			"resposta2": "8",
+			"resposta3": "7",
+			"resposta4": "9",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2768,
+			"nome": "Atividade",
+			"descricao": "Se você tem 96 balas e dá 32 para seu amigo, quantas balas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0046",
+			"resposta1": "64",
+			"resposta2": "54",
+			"resposta3": "74",
+			"resposta4": "84",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 2769,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 105 - 63?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0047",
+			"resposta1": "32",
+			"resposta2": "42",
+			"resposta3": "52",
+			"resposta4": "22",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2770,
+			"nome": "Atividade",
+			"descricao": "Se você tem 72 chocolates e divide igualmente entre 8 amigos, quantos chocolates cada um receberá?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0048",
+			"resposta1": "9",
+			"resposta2": "8",
+			"resposta3": "7",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 2771,
+			"nome": "Atividade",
+			"descricao": "Quanto é 9 x 9?",
+			"produtoId": 2,
+			"nivelAtividade": 2,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0049",
+			"resposta1": "72",
+			"resposta2": "64",
+			"resposta3": "90",
+			"resposta4": "81",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2772,
+			"nome": "Atividade",
+			"descricao": "Se um pacote de lápis tem 10 lápis e você tem 9 pacotes, quantos lápis você tem no total?",
+			"produtoId": 2,
+			"nivelAtividade": 2,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0050",
+			"resposta1": "100",
+			"resposta2": "90",
+			"resposta3": "80",
+			"resposta4": "70",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2773,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 156 ÷ 12?",
+			"produtoId": 2,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0051",
+			"resposta1": "12",
+			"resposta2": "10",
+			"resposta3": "13",
+			"resposta4": "14",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 2774,
+			"nome": "Atividade",
+			"descricao": "Se você tem 135 balas e dá 45 para seu amigo, quantas balas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0052",
+			"resposta1": "80",
+			"resposta2": "70",
+			"resposta3": "100",
+			"resposta4": "90",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2775,
+			"nome": "Atividade",
+			"descricao": "Quanto é 7 x 9?",
+			"produtoId": 2,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0053",
+			"resposta1": "72",
+			"resposta2": "63",
+			"resposta3": "56",
+			"resposta4": "69",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2776,
+			"nome": "Atividade",
+			"descricao": "Se você tem 240 bolinhas e perde 80, quantas bolinhas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0054",
+			"resposta1": "180",
+			"resposta2": "140",
+			"resposta3": "150",
+			"resposta4": "160",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2777,
+			"nome": "Atividade",
+			"descricao": "Qual é o resultado de 82 + 57?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0055",
+			"resposta1": "139",
+			"resposta2": "129",
+			"resposta3": "149",
+			"resposta4": "119",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 2778,
+			"nome": "Atividade",
+			"descricao": "Se você tem 180 balas e dá 30 para seu amigo, quantas balas você ainda tem?",
+			"produtoId": 2,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "PT",
+			"codigoAtividade": "LIVRE0056",
+			"resposta1": "140",
+			"resposta2": "130",
+			"resposta3": "150",
+			"resposta4": "160",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 2779,
+			"nome": "Atividade",
+			"descricao": "What is the sum of 2 + 3?",
+			"produtoId": 24,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0007",
+			"resposta1": "5",
+			"resposta2": "4",
+			"resposta3": "6",
+			"resposta4": "7",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 2780,
+			"nome": "Atividade",
+			"descricao": "What is 7 - 1?",
+			"produtoId": 24,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0008",
+			"resposta1": "7",
+			"resposta2": "8",
+			"resposta3": "5",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2781,
+			"nome": "Atividade",
+			"descricao": "If you have 4 pencils and give 1 to your friend, how many pencils will you have?",
+			"produtoId": 24,
+			"nivelAtividade": 2,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0009",
+			"resposta1": "4",
+			"resposta2": "3",
+			"resposta3": "5",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2782,
+			"nome": "Atividade",
+			"descricao": "What is the result of 6 + 2?",
+			"produtoId": 24,
+			"nivelAtividade": 2,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0010",
+			"resposta1": "7",
+			"resposta2": "9",
+			"resposta3": "8",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_3"
+		},
+		{
+			"id": 2783,
+			"nome": "Atividade",
+			"descricao": "If you have 8 marbles and lose 3, how many marbles do you have left?",
+			"produtoId": 24,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0011",
+			"resposta1": "5",
+			"resposta2": "4",
+			"resposta3": "3",
+			"resposta4": "2",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 2784,
+			"nome": "Atividade",
+			"descricao": "What is 5 - 2?",
+			"produtoId": 24,
+			"nivelAtividade": 3,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0012",
+			"resposta1": "2",
+			"resposta2": "3",
+			"resposta3": "1",
+			"resposta4": "4",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2785,
+			"nome": "Atividade",
+			"descricao": "If you have 6 candies and eat 2, how many candies are left?",
+			"produtoId": 24,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0013",
+			"resposta1": "4",
+			"resposta2": "2",
+			"resposta3": "3",
+			"resposta4": "5",
+			"respostaCorreta": "resposta_1"
+		},
+		{
+			"id": 2786,
+			"nome": "Atividade",
+			"descricao": "What is the result of 4 + 1?",
+			"produtoId": 24,
+			"nivelAtividade": 4,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0014",
+			"resposta1": "3",
+			"resposta2": "4",
+			"resposta3": "6",
+			"resposta4": "5",
+			"respostaCorreta": "resposta_4"
+		},
+		{
+			"id": 2787,
+			"nome": "Atividade",
+			"descricao": "If you have 9 apples and give 2 to your friend, how many apples do you have left?",
+			"produtoId": 24,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0015",
+			"resposta1": "5",
+			"resposta2": "7",
+			"resposta3": "9",
+			"resposta4": "6",
+			"respostaCorreta": "resposta_2"
+		},
+		{
+			"id": 2788,
+			"nome": "Atividade",
+			"descricao": "What is 10 - 1?",
+			"produtoId": 24,
+			"nivelAtividade": 1,
+			"tipoAtividade": "ME",
+			"idioma": "EN",
+			"codigoAtividade": "LIVRE0016",
+			"resposta1": "7",
+			"resposta2": "11",
+			"resposta3": "6",
+			"resposta4": "9",
+			"respostaCorreta": "resposta_4"
+		}
+    ]
+}
+

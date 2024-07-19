@@ -4,9 +4,11 @@ import { QuestionsService } from './QuestionService';
 import { QuestionAnswerService } from './QuestionAnswerService';
 import { QuestionStudentService } from './QuestionStudentService';
 import { ProfileUserService } from './ProfileUserService';
+import { QuestionUpdateService } from './QuestionUpdate';
 
 export const questionsGroupService = new QuestionsGroupService(sqliteService);
 export const questionsService = new QuestionsService(sqliteService);
 export const questionAnswerService = new QuestionAnswerService(sqliteService);
 export const questionStudentService = new QuestionStudentService(sqliteService);
+export const questionUpdateService = new QuestionUpdateService(sqliteService);
 export const profileUserService = new ProfileUserService(sqliteService);

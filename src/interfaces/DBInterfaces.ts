@@ -2,9 +2,7 @@ import { QuestionsGroup } from "../models/QuestionsGroup";
 import { Question } from "../models/Question";
 import { QuestionAnswer } from "../models/QuestionAnswer";
 
-import { CreateQuestionParams } from "../services/QuestionService";
 import { CreateQuestionsGroupParams } from "../services/QuestionsGroupService";
-import { CreateAnswerParams } from "../services/QuestionAnswerService";
 import { QuestionStudent } from "../models/QuestionStudent";
 import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
 import { CreateUserParams } from "../services/ProfileUserService";
@@ -33,6 +31,11 @@ export interface IQuestionStudentRepository {
   fetchAllQuestionStudent(): Promise<QuestionStudent[]>;
   findPendingSyncAnswers(): Promise<QuestionStudent[]>;
   markAsSynced(questionsStudent: QuestionStudent[]): Promise<void>;
+}
+
+export interface IQuestionUpdateRepository {
+  getLastUpdate(): Promise<Date | null>
+  setLastUpdate(date: Date): Promise<void>
 }
 
 export interface IProfileUserRepository {

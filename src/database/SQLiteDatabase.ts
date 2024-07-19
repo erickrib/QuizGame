@@ -3,7 +3,7 @@ import { QuestionsGroup } from "../models/QuestionsGroup";
 import { Question } from "../models/Question";
 import { CreateQuestionsGroupParams } from "../services/QuestionsGroupService";
 import { CreateQuestionParams } from "../services/QuestionService";
-import { IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository } from "../interfaces/DBInterfaces";
+import { IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository, IQuestionUpdateRepository } from "../interfaces/DBInterfaces";
 
 import { conn } from "./db";
 import { CreateAnswerParams } from "../services/QuestionAnswerService";
@@ -13,14 +13,16 @@ import { CreateUserParams } from "../services/ProfileUserService";
 import { QuestionStudent } from "../models/QuestionStudent";
 import { CreateQuestionStudentParams } from "../services/QuestionStudentService";
 import { Language } from '../hooks/useLanguage';
+import { QuestionUpdate } from "../models/QuestionUpdate";
+import { warn } from "console";
 
-class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository {
+class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, IQuestionAnswerRepository, IProfileUserRepository, IQuestionStudentRepository, IQuestionUpdateRepository {
 
   private static instance: SQLiteDatabase | null = null;
   private conn: DataSource;
 
   constructor() {
-     this.conn = conn;
+    this.conn = conn;
   }
 
   public static getInstance(): SQLiteDatabase {
@@ -41,26 +43,26 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     return await this.conn.transaction(async (trans) => {
       // Criar o grupo de questões
       const groupDB = await this.createGroup(trans, param);
-  
+
       // Criar as questões associadas, se houver
       if (param.questions) {
         const questionsDB = await this.createQuestions(trans, param.questions, groupDB);
         groupDB.questions = questionsDB;
       }
-  
+
       return groupDB;
     });
   }
-  
+
   // Funções de Criação de Grupo de Questões
   private async createGroup(trans: EntityManager, param: CreateQuestionsGroupParams): Promise<QuestionsGroup> {
     const group = new QuestionsGroup();
     group.id = param.id;
     group.nome = param.nome;
-    
+
     return await trans.save(group);
   }
-  
+
   // Funções de Criação de Perguntas
   private async createQuestions(trans: EntityManager, questions: CreateQuestionsGroupParams['questions'], groupDB: QuestionsGroup): Promise<Question[]> {
     const questionsPromises = questions.map(async ({ id, nome, descricao, resposta, idioma, codigo, tipo }) => {
@@ -72,19 +74,19 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       question.idioma = idioma;
       question.codigo = codigo;
       question.tipo = tipo;
-  
+
       const questionDB = await trans.save(question);
-  
+
       if (resposta) {
         await this.createAnswers(trans, resposta, questionDB);
       }
-  
+
       return questionDB;
     });
-  
+
     return await Promise.all(questionsPromises);
   }
-  
+
   // Funções de Criação de Respostas
   private async createAnswers(trans: EntityManager, respostas: CreateAnswerParams, questionDB: Question): Promise<void> {
     const answer = new QuestionAnswer();
@@ -94,88 +96,88 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     answer.resposta_4 = respostas.resposta_4;
     answer.resposta_correta = respostas.resposta_correta;
     answer.questao = questionDB;
-  
+
     await trans.save(answer);
   }
-  
+
   // Funções de Atualização de Grupo de Questões
   async updateQuestionsGroup(param: CreateQuestionsGroupParams): Promise<QuestionsGroup | undefined> {
     return await this.conn.transaction(async (trans) => {
-        const groupDB = await trans.findOne(QuestionsGroup, { where: { id: param.id } });
-        if (!groupDB) {
-            return undefined; 
-        }
-  
-        if (param.nome) {
-            groupDB.nome = param.nome;
-        }
-  
-        if (param.questions) {
-            await this.updateQuestions(trans, param.questions);
-        }
-  
-        await trans.save(groupDB);
-  
-        return groupDB;
+      const groupDB = await trans.findOne(QuestionsGroup, { where: { id: param.id } });
+      if (!groupDB) {
+        return undefined;
+      }
+
+      if (param.nome) {
+        groupDB.nome = param.nome;
+      }
+
+      if (param.questions) {
+        await this.updateQuestions(trans, param.questions);
+      }
+
+      await trans.save(groupDB);
+
+      return groupDB;
     });
   }
-  
+
   // Função de Atualização de Perguntas
   private async updateQuestions(trans: EntityManager, questions: CreateQuestionParams[]): Promise<void> {
     const questionsPromises = questions.map(async ({ id, nome, descricao, resposta }) => {
-        const questionDB = await trans.findOne(Question, { where: { id } });
-        if (!questionDB) {
-            return; 
-        }
-  
-        if (nome) {
-            questionDB.nome = nome;
-        }
+      const questionDB = await trans.findOne(Question, { where: { id } });
+      if (!questionDB) {
+        return;
+      }
 
-        if (descricao) {
-            questionDB.descricao = descricao;
-        }
-  
-        if (resposta) {
-            await this.updateAnswer(trans, resposta, questionDB);
-        }
-  
-        await trans.save(questionDB);
+      if (nome) {
+        questionDB.nome = nome;
+      }
+
+      if (descricao) {
+        questionDB.descricao = descricao;
+      }
+
+      if (resposta) {
+        await this.updateAnswer(trans, resposta, questionDB);
+      }
+
+      await trans.save(questionDB);
     });
-  
+
     await Promise.all(questionsPromises);
   }
-  
+
   // Função de Atualização de Resposta
   private async updateAnswer(trans: EntityManager, resposta: CreateAnswerParams, questionDB: Question): Promise<void> {
     const answerDB = await trans.findOne(QuestionAnswer, { where: { questao: questionDB } });
-    
+
     if (!answerDB) {
-        return; 
+      return;
     }
-  
+
     if (resposta.resposta_1) {
-        answerDB.resposta_1 = resposta.resposta_1;
+      answerDB.resposta_1 = resposta.resposta_1;
     }
 
     if (resposta.resposta_2) {
-        answerDB.resposta_2 = resposta.resposta_2;
+      answerDB.resposta_2 = resposta.resposta_2;
     }
     if (resposta.resposta_3) {
-        answerDB.resposta_3 = resposta.resposta_3;
+      answerDB.resposta_3 = resposta.resposta_3;
     }
     if (resposta.resposta_4) {
-        answerDB.resposta_4 = resposta.resposta_4;
+      answerDB.resposta_4 = resposta.resposta_4;
     }
 
     if (resposta.resposta_correta) {
-        answerDB.resposta_correta = resposta.resposta_correta;
+      answerDB.resposta_correta = resposta.resposta_correta;
     }
-  
+
     await trans.save(answerDB);
   }
-  
-  
+
+
   // Funções de Usuário 
   async createProfileUser(params: CreateUserParams): Promise<User> {
     return await this.conn.transaction(async (trans) => {
@@ -209,7 +211,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         existingUser.companyId = params.companyId;
         existingUser.accountActive = params.accountActive;
         existingUser.isLoggedIn = params.isLoggedIn;
-  
+
         const updatedUser = await trans.save(existingUser);
         return updatedUser;
       } catch (error) {
@@ -233,7 +235,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         await transManager.save(existingUser);
 
         return existingUser;
-        
+
       } catch (error) {
         throw new Error(`Falha ao atualizar o estado de isLoggedIn para o usuário com ID ${id}: ${error.message}`);
       }
@@ -248,7 +250,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         existingQuestion.descricao = params.descricao;
         existingQuestion.grupo = await trans.findOneOrFail(QuestionsGroup, { where: { id: params.grupo_id } });
         existingQuestion.resposta = await trans.findOneOrFail(QuestionAnswer, { where: { id: params.resposta.id } });
-  
+
         const updatedQuestion = await trans.save(existingQuestion);
         return updatedQuestion;
       } catch (error) {
@@ -256,12 +258,12 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
         throw new Error('Erro ao atualizar questão');
       }
     });
-  };  
+  };
 
   async findProfileUserById(userId: number): Promise<User | undefined> {
     return await this.conn.manager.findOne(User, { where: { id: userId } });
   }
-  
+
   async createQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
     return await this.conn.transaction(async (trans) => {
       try {
@@ -291,15 +293,15 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
   async fetchAllQuestions(): Promise<Question[]> {
     return await this.conn.manager.find(Question, {
-      relations: ['grupo', 'resposta'] 
+      relations: ['grupo', 'resposta']
     });
   }
-  
+
 
   async fetchAllQuestionStudent(): Promise<QuestionStudent[]> {
     return await this.conn.manager.find(QuestionStudent);
   }
-  
+
   // Funções de Busca de Grupo de Questões
   async fetchAllQuestionsGroups(language: Language): Promise<QuestionsGroup[]> {
     return await this.conn.manager
@@ -308,7 +310,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       .where('question.idioma = :language', { language: language.toUpperCase() })
       .getMany();
   }
-  
+
 
   async findByQuestionsGroup(grupo: Partial<QuestionsGroup>): Promise<Question[]> {
     return await this.conn.manager.find(Question, {
@@ -321,10 +323,10 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
   async findPendingSyncAnswers(): Promise<QuestionStudent[]> {
     return await conn.manager.find(QuestionStudent, {
       where: {
-          isPendingSync: true,
+        isPendingSync: true,
       },
-      relations: ['perfilUsuario', 'questao'] 
-  });
+      relations: ['perfilUsuario', 'questao']
+    });
   }
 
   async markAsSynced(questionStudents: QuestionStudent[]): Promise<void> {
@@ -341,7 +343,7 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
       }
     });
   }
-  
+
   async findByQuestionId(questionId: number): Promise<QuestionAnswer[]> {
     return await this.conn.manager.find(QuestionAnswer, {
       where: {
@@ -352,6 +354,39 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
   async deleteQuestionById(id: number): Promise<void> {
     await this.conn.manager.delete(Question, { id });
+  }
+
+  // Funções de Data de atualização de Questões
+  async getLastUpdate(): Promise<Date | null> {
+    const lastUpdateEntry = await this.conn.manager.findOne(QuestionUpdate, {
+      where: { id: 1 }
+    });
+
+    return lastUpdateEntry ? lastUpdateEntry.lastUpdate : null;
+  }
+
+  async setLastUpdate(date: Date): Promise<void> {
+
+    await this.conn.transaction(async (trans) => {
+      try {
+
+        let lastUpdateEntry = await trans.findOne(QuestionUpdate, {
+          where: { id: 1 }
+        });
+
+        if (!lastUpdateEntry) {
+          lastUpdateEntry = new QuestionUpdate();
+          lastUpdateEntry.id = 1;
+        }
+
+        lastUpdateEntry.lastUpdate = date;
+
+        await trans.save(lastUpdateEntry);
+      } catch (innerError) {
+        console.error('Erro dentro da transação:', innerError);
+        throw new Error('Erro dentro da transação:');
+      }
+    });
   }
 
   // Função para limpar todo o banco de dados
@@ -368,8 +403,10 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
 
       await trans.delete(QuestionsGroup, {});
 
+      await trans.delete(QuestionUpdate, {});
+
       await trans.delete(User, {});
-  });
+    });
 
     console.warn('Banco de dados limpo!');
   }

@@ -36,8 +36,8 @@ export default function App() {
     };
   
     if (ready) {
-      // deleteQuestions();
-       fetchQuestions();
+     // deleteQuestions();
+     fetchQuestions();
     }
   }, [ready]);
   
@@ -51,7 +51,7 @@ export default function App() {
       <AuthProvider>
         <SyncProvider>
           <Stack.Navigator initialRouteName="HomeView">
-            <Stack.Screen name="HomeView" component={HomeView} options={{ headerShown: false }} />
+            <Stack.Screen name="HomeView" component={HomeView} options={{ headerShown: false, title: 'Home' }} />
             <Stack.Screen name="ChoseGroupQuestions" component={ChoseGroupQuestions} options={{ title: 'Escolha Grupo' }} />
             <Stack.Screen name='UserView' component={LoginView} options={{ title: 'Login' }} />
             <Stack.Screen name="GameView" component={GameView} options={{ title: 'Quiz' }} />

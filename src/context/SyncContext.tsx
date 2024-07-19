@@ -4,6 +4,8 @@ import { api } from '../api/api';
 import { syncQuestions } from '../utils/syncQuestions';
 import { syncPendingAnswers } from '../utils/syncPendingAnswers';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import { questionUpdateService } from '../services';
+import { log } from 'console';
 
 interface SyncContextData {
     syncData: () => Promise<void>;
@@ -31,31 +33,41 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     useEffect(() => {
         return () => {
-            setIsLoading(false); 
+            setIsLoading(false);
         };
     }, []);
 
     const syncData = async () => {
         setIsLoading(true);
-      
+
         try {
             await Promise.all([
-                syncTransformedQuestions(), 
+                syncTransformedQuestions(),
                 syncPendingAnswersUser()
             ]);
         } catch (error) {
-          console.error('Erro ao sincronizar dados:', error);
-      
+            console.error('Erro ao sincronizar dados:', error);
+
         } finally {
-          setIsLoading(false);
-          setIsSyncEnabled(false);
+            setIsLoading(false);
+            setIsSyncEnabled(false);
         }
-      };
-      
+    };
+
 
     const syncTransformedQuestions = async () => {
         try {
-            const activitiesList = await api.get(`/atividade/offline/${user.id}/2024-07-10`, {
+            const lastUpdate = await questionUpdateService.getLastUpdate();
+
+            let date = '';
+            if (lastUpdate) {
+                const year = lastUpdate.getUTCFullYear();
+                const month = String(lastUpdate.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(lastUpdate.getUTCDate()).padStart(2, '0');
+                date = `${year}-${month}-${day}`;
+            }
+
+            const activitiesList = await api.get(`/atividade/offline?dataAtualizacao=${date ?? ''}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -63,7 +75,15 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             if (activitiesList.data.listaAtividades) {
                 await syncQuestions(activitiesList.data.listaAtividades);
+            };
+
+            const apiDate = new Date(activitiesList.data.dataAtualizacao);
+            const localDate = new Date(lastUpdate);
+
+            if (apiDate.getTime() > localDate.getTime()) {
+                await questionUpdateService.setLastUpdate(apiDate);
             }
+
         } catch (error) {
             console.error('Erro ao sincronizar questões:', error);
         }
