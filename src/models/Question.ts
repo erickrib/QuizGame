@@ -36,6 +36,6 @@ import { QuestionStudent } from "./QuestionStudent";
     @OneToOne(() => QuestionAnswer, answer => answer.questao, { cascade: true })
     resposta!: Relation<QuestionAnswer>;
 
-    @OneToOne(() => QuestionStudent, questionStudent => questionStudent.questao)
+    @OneToOne(() => QuestionStudent, questionStudent => questionStudent.questao, { cascade: true })
     questao_respondida!: Relation<QuestionStudent>;
   }

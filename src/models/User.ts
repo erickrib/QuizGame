@@ -27,6 +27,6 @@ export class User {
   @Column({ name: 'token', type: 'varchar' })
   token!: string;
 
-  @OneToMany(() => QuestionStudent, questionStudent => questionStudent.perfilUsuario)
+  @OneToMany(() => QuestionStudent, questionStudent => questionStudent.perfilUsuario, { cascade: true })
   questoes_realizadas!: QuestionStudent[];
 }

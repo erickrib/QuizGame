@@ -2,6 +2,7 @@ import { IQuestionStudentRepository } from "../interfaces/DBInterfaces";
 import { QuestionStudent } from "../models/QuestionStudent";
 
 export interface CreateQuestionStudentParams {
+  apiId?: number;
   id_perfil_usuario: number;
   id_atividade: number;
   status_resposta?: string;
@@ -31,6 +32,14 @@ export class QuestionStudentService {
 
   async markAsSynced(questionsStudent: QuestionStudent[]) {
     return await this.repository.markAsSynced(questionsStudent);
+  }
+
+  async delete(id: number) {
+    return await this.repository.deleteQuestionStudentById(id);
+  }
+
+  async update(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
+    return await this.repository.updateQuestionStudent(params);
   }
 
 }

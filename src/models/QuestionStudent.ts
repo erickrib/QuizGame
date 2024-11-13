@@ -20,10 +20,10 @@ export class QuestionStudent {
     isPendingSync: boolean;
 
     @
-    ManyToOne(() => User, user => user.questoes_realizadas, { cascade: true })
+    ManyToOne(() => User, user => user.questoes_realizadas)
     perfilUsuario!: User;
 
-    @OneToOne(() => Question, question => question.questao_respondida, { cascade: true })
+    @OneToOne(() => Question, question => question.questao_respondida)
     @JoinColumn()
     questao!: Question;
 

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { api } from '../api/api';
 import { syncQuestions } from '../utils/syncQuestions';
-import { syncPendingAnswers } from '../utils/syncPendingAnswers';
+import { syncAnswersStudent } from '../utils/syncPendingAnswers';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { questionUpdateService } from '../services';
 import { log } from 'console';
@@ -91,8 +91,14 @@ export const SyncProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const syncPendingAnswersUser = async () => {
         try {
-            if (isConnected) {
-                await syncPendingAnswers(token);
+            if (isConnected && user?.id) {
+                const response = await api.get(`/atividadealuno/usuario/${user.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                await syncAnswersStudent(response.data, token);
             }
         } catch (error) {
             console.error('Erro ao sincronizar respostas pendentes:', error);

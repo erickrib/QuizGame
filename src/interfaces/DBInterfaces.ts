@@ -31,6 +31,8 @@ export interface IQuestionStudentRepository {
   fetchAllQuestionStudent(): Promise<QuestionStudent[]>;
   findPendingSyncAnswers(): Promise<QuestionStudent[]>;
   markAsSynced(questionsStudent: QuestionStudent[]): Promise<void>;
+  deleteQuestionStudentById(id: number): Promise<void>;
+  updateQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent>;
 }
 
 export interface IQuestionUpdateRepository {

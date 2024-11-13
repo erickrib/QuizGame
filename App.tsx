@@ -36,8 +36,8 @@ export default function App() {
     };
   
     if (ready) {
-     // deleteQuestions();
-     fetchQuestions();
+    // deleteQuestions();
+    fetchQuestions();
     }
   }, [ready]);
   

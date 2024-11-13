@@ -329,6 +329,42 @@ class SQLiteDatabase implements IQuestionsGroupRepository, IQuestionRepository, 
     });
   }
 
+  // Função para deletar um QuestionStudent pelo ID
+async deleteQuestionStudentById(id: number): Promise<void> {
+  await this.conn.transaction(async (trans) => {
+      const existingQuestionStudent = await trans.findOneOrFail(QuestionStudent, { where: { id } });
+      await trans.delete(QuestionStudent, { id });
+  });
+}
+
+// Função para atualizar um QuestionStudent
+async updateQuestionStudent(params: CreateQuestionStudentParams): Promise<QuestionStudent> {
+  return await this.conn.transaction(async (trans) => {
+      const existingQuestionStudent = await trans.findOneOrFail(QuestionStudent, { where: { id: params.id_atividade } });
+
+      if (params.status_resposta !== undefined) {
+        existingQuestionStudent.statusResposta = params.status_resposta;
+      }
+
+      if (params.codigo_atividade !== undefined) {
+        existingQuestionStudent.codigoAtividade = params.codigo_atividade;
+      }
+
+      if (params.tempo_execucao !== undefined) {
+        existingQuestionStudent.tempo_execucao = params.tempo_execucao;
+      }
+
+      if (params.is_pending_sync !== undefined) {
+        existingQuestionStudent.isPendingSync = params.is_pending_sync;
+      }
+
+      const updatedQuestionStudent = await trans.save(existingQuestionStudent);
+
+      return updatedQuestionStudent;
+  });
+}
+
+
   async markAsSynced(questionStudents: QuestionStudent[]): Promise<void> {
     await this.conn.transaction(async (transManager) => {
       try {
